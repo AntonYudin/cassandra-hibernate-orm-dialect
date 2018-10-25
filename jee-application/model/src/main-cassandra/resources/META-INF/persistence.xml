@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+	version="2.1"
+>
+
+	<persistence-unit
+		name="default"
+		transaction-type="RESOURCE_LOCAL"
+	>
+
+		<provider>com.impetus.kundera.KunderaPersistence</provider>		
+
+		<!--
+		<jar-file>model-authentication.jar</jar-file>
+		-->
+
+		<class>com.antonyudin.contents.items.model.ItemAdded</class>
+<!--
+-->
+		<class>com.antonyudin.contents.items.model.ItemRemoved</class>
+		<class>com.antonyudin.contents.items.model.NameChanged</class>
+		<class>com.antonyudin.contents.items.model.NameChangedIndex</class>
+		<class>com.antonyudin.contents.items.model.NameChangedIndexId</class>
+		<class>com.antonyudin.contents.items.model.ContentUpdated</class>
+		<class>com.antonyudin.contents.items.model.ContentIndexUpdated</class>
+		<class>com.antonyudin.contents.items.model.TagAdded</class>
+		<class>com.antonyudin.contents.items.model.TagAssigned</class>
+		<class>com.antonyudin.contents.items.model.TagAssignedIndex</class>
+		<class>com.antonyudin.contents.items.model.TagAssignedIndexId</class>
+		<class>com.antonyudin.contents.items.model.EventId</class>
+		<class>com.antonyudin.contents.items.model.Event</class>
+
+		<!-- model-logging -->
+		<class>com.antonyudin.commons.logging.model.StateId</class>
+		<class>com.antonyudin.commons.logging.model.State</class>
+		<class>com.antonyudin.commons.logging.model.RecordId</class>
+		<class>com.antonyudin.commons.logging.model.Record</class>
+
+		<!-- model-credentials -->
+		<class>com.antonyudin.commons.authentication.model.Credentials</class>
+		<class>com.antonyudin.commons.authentication.model.CredentialsId</class>
+		<class>com.antonyudin.commons.authentication.model.CredentialsUserNameIndex</class>
+		<class>com.antonyudin.commons.authentication.model.CredentialsUserNameIndexId</class>
+
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<properties>			
+			<!--
+			<property name="jboss.as.jpa.managed" value="false"/>
+			-->
+
+			<property name="kundera.show.query" value="true"/>
+			<property name="kundera.nodes" value="127.0.0.1"/>
+			<!--
+			<property name="kundera.nodes" value="10.5.2.221,172.16.33.161,10.5.2.142,127.0.0.1"/>
+			-->
+
+			<!-- DataStax Client -->
+
+			<property name="kundera.port" value="9042"/>
+			<property
+				name="kundera.client.lookup.class"
+				value="com.impetus.kundera.client.cassandra.dsdriver.DSClientFactory"
+			/>
+
+			<!-- Thrift -->
+			<!--
+
+			<property name="kundera.port" value="9160"/>
+			<property
+				name="kundera.client.lookup.class"
+				value="com.impetus.client.cassandra.thrift.ThriftClientFactory"
+			/>
+			-->
+
+			<property name="kundera.keyspace" value="contents"/>
+			<property name="kundera.dialect" value="cassandra"/>
+			<property name="kundera.ddl.auto.prepare" value="update" />
+			<!--
+			<property name="kundera.ddl.auto.prepare" value="create-drop" />
+			-->
+
+			<property
+				name="javax.persistence.sql-load-script-source"
+				value="META-INF/1after-create.cql"
+			/>
+
+		</properties>
+	</persistence-unit>
+
+</persistence>
+

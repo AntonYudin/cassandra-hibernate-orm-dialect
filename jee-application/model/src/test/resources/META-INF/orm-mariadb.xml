@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<entity-mappings
+	xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd"
+	version="2.1"
+>
+
+	<package>com.antonyudin.cassandra.model</package>
+
+
+	<embeddable class="EventId">
+
+		<attributes>
+
+			<embedded name="sourceId">
+				<attribute-override name="identity">
+					<column
+						name="source_identity_value"
+						column-definition="BINARY(16)"
+					/>
+				</attribute-override>
+			</embedded>
+
+			<basic name="identity">
+				<column column-definition="BINARY(16)"/>
+				<!--
+				<column column-definition="VARCHAR(36)"/>
+				-->
+			</basic>
+			<basic name="type">
+				<column column-definition="VARCHAR(32)"/>
+			</basic>
+			<basic name="group">
+				<column name="groupName" column-definition="VARCHAR(32)"/>
+			</basic>
+		</attributes>
+	</embeddable>
+
+
+	<embeddable class="SourceId">
+		<attributes>
+			<basic name="identity">
+				<!--
+				<column column-definition="VARCHAR(36)"/>
+				-->
+				<column column-definition="BINARY(16)"/>
+			</basic>
+		</attributes>
+	</embeddable>
+
+
+	<embeddable class="ContainerId">
+		<attributes>
+			<basic name="identity">
+			<!--
+				<column column-definition="VARCHAR(36)"/>
+			-->
+				<column column-definition="BINARY(16)"/>
+			</basic>
+		</attributes>
+	</embeddable>
+
+	<entity
+		class="Event"
+	>
+		<attributes>
+			<element-collection name="listOfNames" target-class="java.lang.String">
+				<order-column/>
+			</element-collection>
+			<basic name="content">
+				<column column-definition="VARCHAR(128)"/>
+			</basic>
+			<basic name="content2">
+				<column column-definition="VARCHAR(128)"/>
+			</basic>
+		</attributes>
+	</entity>
+
+	<entity
+		class="EventChild"
+	>
+		<!--
+		<association-override name="event">
+			<join-column
+				name="source_identity_value"
+				referenced-column-name="source_identity"
+				column-definition="BINARY(16)"
+				insertable="false"
+				updatable="false"
+			/>
+		</association-override>
+		-->
+	</entity>
+
+
+</entity-mappings>
+

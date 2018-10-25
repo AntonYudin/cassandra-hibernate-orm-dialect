@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<application
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_6.xsd"
+	version="6"
+>
+
+	<display-name>Cassandra JEE Application</display-name>
+
+	<module>
+		<ejb>logic-1.0.jar</ejb>
+	</module>
+
+	<data-source>
+		<name>java:jboss/datasources/jee-cassandra-datasource</name>
+
+		<class-name>com.antonyudin.cassandra.driver.DataSource</class-name>
+
+		<server-name>localhost</server-name>
+		<database-name>jee</database-name>
+		<user>jee</user>
+		<password>jee</password>
+		<transactional>false</transactional>
+		<!--
+		<isolation-level>TRANSACTION_READ_COMMITTED</isolation-level>
+		-->
+		<initial-pool-size>20</initial-pool-size>
+		<max-pool-size>20</max-pool-size>
+		<min-pool-size>20</min-pool-size>
+		<max-statements>0</max-statements>
+	</data-source>
+
+</application>
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<project name="jee-application">
+
+
+	<property name="applicationName" value="jee"/>
+	<property name="earDir" value="target/application-1.0"/>
+	<property name="earFile" value="target/contents.ear"/>
+
+	<hostinfo prefix="host"/>
+
+	<property file="build.${host.NAME}.properties"/>
+	<property file="build.${os.name}.properties"/>
+
+	<property name="deploy.directory" value="${serverRoot}/standalone/deployments"/>
+
+
+	<target name="undeploy">
+
+		<echo message="host: ${host.NAME}"/>
+		<echo message="os.name: ${os.name}"/>
+		<echo message="os.arch: ${os.arch}"/>
+		<echo message="serverRoot: ${serverRoot}"/>
+
+		<delete dir="${deploy.directory}/${applicationName}.ear"/>
+		<delete file="${deploy.directory}/${applicationName}.ear.dodeploy"/>
+		<delete file="${deploy.directory}/${applicationName}.ear.deployed"/>
+
+	</target>
+
+
+
+	<target name="deploy" depends="undeploy">
+
+		<copy todir="${deploy.directory}/${applicationName}.ear">
+			<fileset dir="${earDir}"/>
+		</copy>
+
+		<touch file="${deploy.directory}/${applicationName}.ear.dodeploy"/>
+
+	</target>
+
+	<target name="deploy-remote">
+
+		<scp
+			file="${earFile}"
+			todir="ec2-user@23.23.132.79:/usr/applications/wildfly-10.1.0.Final/standalone/deployments/${applicationName}-f.ear"
+			keyfile="c:/users/ayudi/.ssh/id_rsa"
+			port="53"
+			trust="true"
+		/>
+
+		<scp
+			file="${applicationName}.dodeploy"
+			todir="ec2-user@23.23.132.79:/usr/applications/wildfly-10.1.0.Final/standalone/deployments/${applicationName}-f.ear.dodeploy"
+			keyfile="c:/users/ayudi/.ssh/id_rsa"
+			port="53"
+			trust="true"
+		/>
+	</target>
+
+
+</project>
+

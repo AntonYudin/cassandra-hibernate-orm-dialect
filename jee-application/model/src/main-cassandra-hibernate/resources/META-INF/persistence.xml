@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+	version="2.1"
+>
+
+	<persistence-unit name="default" transaction-type="JTA">
+
+		<description>Test Cassandra JEE Application Persistence Unit</description>
+
+		<jta-data-source>java:jboss/datasources/jee-cassandra-datasource</jta-data-source>
+
+		<mapping-file>META-INF/orm.xml</mapping-file>
+
+		<class>com.antonyudin.cassandra.model.SourceId</class>
+		<class>com.antonyudin.cassandra.model.Source</class>
+		<class>com.antonyudin.cassandra.model.EventId</class>
+		<class>com.antonyudin.cassandra.model.EventChildId</class>
+		<class>com.antonyudin.cassandra.model.Event</class>
+		<class>com.antonyudin.cassandra.model.ItemAdded</class>
+		<class>com.antonyudin.cassandra.model.EventChild</class>
+		<class>com.antonyudin.cassandra.model.Container</class>
+		<class>com.antonyudin.cassandra.model.ContainerId</class>
+		<class>com.antonyudin.cassandra.model.Parent</class>
+		<class>com.antonyudin.cassandra.model.Child</class>
+		<class>com.antonyudin.cassandra.model.ChildId</class>
+		<class>com.antonyudin.cassandra.model.UUIDId</class>
+
+		<properties>
+
+<!--
+			<property name="javax.persistence.jdbc.url" value="jdbc:cassandra://localhost/jee?tracing=true"/>
+-->
+<!--
+			<property name="javax.persistence.jdbc.url" value="jdbc:cassandra://localhost/jee"/>
+
+			<property name="javax.persistence.jdbc.driver" value="com.antonyudin.cassandra.driver.Driver"/>
+-->
+			<property name="javax.persistence.schema-generation.database.action" value="create"/>
+			<property name="javax.persistence.schema-generation.create-database-schemas" value="false"/>
+			<!--
+			<property name="javax.persistence.schema-generation.create-source" value="metadata"/>
+			-->
+			<property name="javax.persistence.schema-generation.create-source" value="metadata-then-script"/>
+
+			<property name="javax.persistence.sql-load-script-source" value="META-INF/load-script.cql" />
+			<property name="javax.persistence.schema-generation.create-script-source" value="META-INF/create.cql"/>
+
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.format_sql" value="true"/>
+
+			<property name="hibernate.use_sql_comments" value="true"/>
+
+			<property name="hibernate.jdbc.batch_size" value="128"/>
+
+
+			<property
+				name="hibernate.dialect"
+				value="com.antonyudin.cassandra.hibernate.dialect.CassandraDialect"
+			/>
+		</properties>
+
+	</persistence-unit>
+
+</persistence>
+

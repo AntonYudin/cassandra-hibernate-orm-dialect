@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>application</artifactId>
+	<packaging>ear</packaging>
+	<version>1.0</version>
+
+	<parent>
+		<groupId>com.antonyudin.cassandra</groupId>
+		<artifactId>jee-application</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.antonyudin.cassandra</groupId>
+			<artifactId>logic</artifactId>
+			<version>1.0</version>
+			<type>ejb</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.antonyudin.cassandra</groupId>
+			<artifactId>model</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.antonyudin.cassandra</groupId>
+			<artifactId>hibernate-cassandra-dialect</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.antonyudin.cassandra</groupId>
+			<artifactId>driver</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+		</dependency>
+
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>${maven.ear.plugin.version}</version>
+
+				<configuration>
+
+					<applicationXml>jee-application/application/src/main/resources/META-INF/application.xml</applicationXml>
+					<generateApplicationXml>false</generateApplicationXml>
+
+					<finalName>jee-application</finalName>
+					<version>6</version>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<skinnyWars>true</skinnyWars>
+					<displayName>Cassandra JEE Application</displayName>
+					<!--
+					<fileNameMapping>full</fileNameMapping>
+					-->
+
+					<modules>
+
+						<jarModule>
+							<groupId>com.antonyudin.cassandra</groupId>
+							<artifactId>model</artifactId>
+							<bundleFileName>model-1.0.jar</bundleFileName>
+							<bundleDir>lib</bundleDir>
+						</jarModule>
+
+						<ejbModule>
+							<groupId>com.antonyudin.cassandra</groupId>
+							<artifactId>logic</artifactId>
+							<bundleFileName>logic-1.0.jar</bundleFileName>
+						</ejbModule>
+
+					</modules>
+
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+

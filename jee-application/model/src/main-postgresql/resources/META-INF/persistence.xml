@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+	version="2.1"
+>
+
+
+	<persistence-unit name="default" transaction-type="JTA">
+
+		<description>PostgreSQL JEE Application Persistence Unit</description>
+
+		<jta-data-source>java:jboss/datasources/jee-postgresql-datasource</jta-data-source>
+
+		<class>com.antonyudin.cassandra.model.SourceId</class>
+		<class>com.antonyudin.cassandra.model.Source</class>
+		<class>com.antonyudin.cassandra.model.EventId</class>
+		<class>com.antonyudin.cassandra.model.EventChildId</class>
+		<class>com.antonyudin.cassandra.model.Event</class>
+		<class>com.antonyudin.cassandra.model.ItemAdded</class>
+		<class>com.antonyudin.cassandra.model.EventChild</class>
+		<class>com.antonyudin.cassandra.model.Container</class>
+		<class>com.antonyudin.cassandra.model.ContainerId</class>
+		<class>com.antonyudin.cassandra.model.Parent</class>
+		<class>com.antonyudin.cassandra.model.Child</class>
+		<class>com.antonyudin.cassandra.model.ChildId</class>
+		<class>com.antonyudin.cassandra.model.UUIDId</class>
+
+		<properties>
+
+			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.format_sql" value="true"/>
+			<property name="hibernate.default_schema" value="public"/>
+
+			<property name="hibernate.jdbc.fetch_size" value="32"/>
+			<property name="hibernate.jdbc.batch_size" value="8"/>
+
+			<property name="hibernate.max_fetch_depth" value="2"/>
+
+			<property name="hibernate.default_batch_fetch_size" value="32"/>
+
+			<!--
+			<property name="hibernate.cache.use_second_level_cache" value="true"/>
+			<property name="hibernate.cache.use_query_cache" value="true"/>
+			-->
+
+			<property name="toplink.logging.level" value="INFO"/>
+			<property name="toplink.ddl-generation" value="create-tables"/>
+
+			<!--
+			<property name="hibernate.discriminator.ignore_explicit_for_joined" value="false"/>
+			-->
+
+			<!--
+			<property name="toplink.ddl-generation" value="none"/>
+			-->
+			<property
+				name="hibernate.dialect"
+				value="org.hibernate.dialect.PostgreSQL94Dialect"
+			/>
+		</properties>
+
+	</persistence-unit>
+
+</persistence>
+

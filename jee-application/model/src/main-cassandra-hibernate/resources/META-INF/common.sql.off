@@ -1,0 +1,17 @@
+
+CREATE OR REPLACE FUNCTION max (uuid, uuid)
+	RETURNS uuid AS $$
+	BEGIN
+		IF $1 IS NULL OR $1 < $2 THEN
+			RETURN $2;
+		END IF;
+
+		RETURN $1;
+	END;
+$$ LANGUAGE plpgsql;
+
+CREATE AGGREGATE max (uuid) (
+	sfunc = max,
+	stype = uuid
+);
+
