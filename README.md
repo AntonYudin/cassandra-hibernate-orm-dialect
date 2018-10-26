@@ -1,10 +1,10 @@
 # cassandra-hibernate-orm-dialect
 Hibernate ORM Cassandra Dialect and JDBC Driver
 
-##Description
+## Description
 This is an open-source JDBC driver and Hibernate ORM Dialect for Cassandra.
 
-##Reasons
+## Reasons
 There are several open source Cassandra JPA implementations out there,
 yet none of them support critical features that I often use in my
 JPA/JEE projects. For example:
@@ -45,7 +45,7 @@ The model also has to make sense for a sharded/distributed database.
 The ``jee-application/model/src/main/java`` folder contains an example
 of a model that works for Cassandra, PostgreSQL, and MariaDB.
 
-##Details
+## Details
 
 This repository contains two main parts - Cassandra JDBC driver and
 Cassandra Hibernate ORM dialect.
