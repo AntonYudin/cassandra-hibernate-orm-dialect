@@ -6,7 +6,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
 
-	<!-- copyright (c) 2017, 2018 Anton Yudin -->
+	<!-- copyright (c) 2018 Anton Yudin -->
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.antonyudin.cassandra</groupId>
@@ -15,6 +15,20 @@
 	<packaging>pom</packaging>
 
 	<name>cassandra-jdbc-driver</name>
+
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.jar.plugin.version>3.1.0</maven.jar.plugin.version>
+		<maven.ear.plugin.version>3.0.1</maven.ear.plugin.version>
+		<maven.ejb.plugin.version>3.0.1</maven.ejb.plugin.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<excluded.tests>mariadb, infinispan, mongodb</excluded.tests>
+	</properties>
+
+
 
 	<profiles>
 
@@ -88,15 +102,6 @@
 		<module>jee-application</module>
 	</modules>
 
-	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.jar.plugin.version>3.1.0</maven.jar.plugin.version>
-		<maven.ear.plugin.version>3.0.1</maven.ear.plugin.version>
-		<maven.ejb.plugin.version>3.0.1</maven.ejb.plugin.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
 	<repositories>
 		<repository>
 			<id>in-project</id>
@@ -131,6 +136,7 @@
 						<skipTests>true</skipTests>
 						<useFile>true</useFile>
 						-->
+						<excludedGroups>${excluded.tests}</excludedGroups>
 					</configuration>
 				</plugin>
 

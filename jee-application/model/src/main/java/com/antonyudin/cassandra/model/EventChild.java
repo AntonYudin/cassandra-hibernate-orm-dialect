@@ -84,7 +84,6 @@ public class EventChild implements java.io.Serializable {
 		@JoinColumn(name = "reference", referencedColumnName = "reference", insertable = false, updatable = false),
 		@JoinColumn(name = "created", referencedColumnName = "created", insertable = false, updatable = false)
 	})
-
 //	@Transient
 	public Event getEvent() {
 		return event;

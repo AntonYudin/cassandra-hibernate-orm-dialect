@@ -542,6 +542,7 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 				childId.setChildId(random.nextLong());
 
 				child.setId(childId);
+				child.setEvent(event);
 
 				event.getChildren().add(child);
 			}

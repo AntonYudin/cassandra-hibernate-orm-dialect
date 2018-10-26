@@ -258,12 +258,12 @@
 		<class>com.antonyudin.cassandra.model.Event</class>
 		<class>com.antonyudin.cassandra.model.ItemAdded</class>
 		<class>com.antonyudin.cassandra.model.EventChild</class>
-		<class>com.antonyudin.cassandra.model.Container</class>
-		<class>com.antonyudin.cassandra.model.ContainerId</class>
+		<class>com.antonyudin.cassandra.model.UUIDId</class>
 		<class>com.antonyudin.cassandra.model.Parent</class>
 		<class>com.antonyudin.cassandra.model.Child</class>
 		<class>com.antonyudin.cassandra.model.ChildId</class>
-		<class>com.antonyudin.cassandra.model.UUIDId</class>
+		<class>com.antonyudin.cassandra.model.Container</class>
+		<class>com.antonyudin.cassandra.model.ContainerId</class>
 
 		<properties>
 			<property name="hibernate.ogm.datastore.provider" value="mongodb"/>
@@ -286,8 +286,6 @@
 		<class>com.antonyudin.cassandra.model.EventId</class>
 		<class>com.antonyudin.cassandra.model.Event</class>
 		<class>com.antonyudin.cassandra.model.ItemAdded</class>
-
-<!--
 		<class>com.antonyudin.cassandra.model.EventChildId</class>
 		<class>com.antonyudin.cassandra.model.EventChild</class>
 		<class>com.antonyudin.cassandra.model.Container</class>
@@ -296,7 +294,7 @@
 		<class>com.antonyudin.cassandra.model.Child</class>
 		<class>com.antonyudin.cassandra.model.ChildId</class>
 		<class>com.antonyudin.cassandra.model.UUIDId</class>
--->
+
 
 		<properties>
 			<property name="hibernate.ogm.datastore.provider" value="infinispan_embedded"/>

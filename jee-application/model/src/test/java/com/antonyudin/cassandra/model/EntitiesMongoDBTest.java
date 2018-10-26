@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @org.junit.jupiter.api.TestInstance(org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS)
-@org.junit.jupiter.api.Disabled
+@org.junit.jupiter.api.Tag("mongodb")
 public class EntitiesMongoDBTest extends AbstractEntitiesTest {
 
 	private final static java.util.logging.Logger logger = java.util.logging.Logger.getLogger(

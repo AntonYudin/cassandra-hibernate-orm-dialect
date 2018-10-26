@@ -68,7 +68,7 @@ import javax.persistence.FetchType;
 )
 @Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue(Event.discriminator)
-
+//@DiscriminatorColumn(name = "typed")
 @org.hibernate.annotations.DiscriminatorFormula("type")
 
 // XXX does not work, requires a fieldbridge
