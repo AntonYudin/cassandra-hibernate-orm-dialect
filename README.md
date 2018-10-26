@@ -10,18 +10,14 @@ yet none of them support critical features that I often use in my
 JPA/JEE projects. For example:
 
 * Hibernate OGM (https://github.com/hibernate/hibernate-ogm-cassandra)
-** Does not support Criteria API (Not just for Cassandra. No Criteria
-API support at all)
+	* Does not support Criteria API (Not just for Cassandra. No Criteria API support at all)
 * Kundera (https://github.com/Impetus/Kundera)
-** Cassandra scalar native queries return a
-``List<Map<String, Object>>`` or ``List<RandomEntity>`` instead of
-``List<Object[]>``
-** No JPQL support for ``NEW className(..)`` in ``SELECT`` clause
-** Selecting only ``@EmbeddedId`` property with JPQL fails
-** No proper support for polymorphic queries
-** Criteria API - support for ``@EmbeddedId`` - cannot use ``Path<Entity>`` to access embedded key 
-** Lots of other issues of non-JPA compliance
-
+	* Cassandra scalar native queries return a ``List<Map<String, Object>>`` or ``List<RandomEntity>`` instead of ``List<Object[]>``
+	* No JPQL support for ``NEW className(..)`` in ``SELECT`` clause
+	* Selecting only ``@EmbeddedId`` property with JPQL fails
+	* No proper support for polymorphic queries
+	* Criteria API - support for ``@EmbeddedId`` - cannot use ``Path<Entity>`` to access embedded key 
+	and Lots of other issues of non-JPA compliance
 
 One of the benefits of using JPA is a potential to switch to a
 different Database provider without changing much of the code. I
