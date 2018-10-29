@@ -1,9 +1,9 @@
 # cassandra-hibernate-orm-dialect
 Hibernate ORM Cassandra Dialect and JDBC Driver
 
-* Description
-* Reasons
-* Implementation Details
+* [Description](README.md#description)
+* [Reasons](README.md#reasons)
+* [Implementation Details](README.md#implementation-details)
 
 ## Description
 This is an open-source JDBC driver and Hibernate ORM Dialect for Cassandra.
