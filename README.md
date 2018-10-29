@@ -17,10 +17,10 @@ JPA/JEE projects. For example:
 	* Selecting only ``@EmbeddedId`` property with JPQL fails
 	* No proper support for polymorphic queries
 	* Criteria API - support for ``@EmbeddedId`` - cannot use ``Path<Entity>`` to access embedded key 
-	and Lots of other issues of non-JPA compliance
+	and lots of other issues of non-JPA compliance
 
 One of the benefits of using JPA is a potential to switch to a
-different Database provider without changing much of the code. I
+different database provider without changing much of the code. I
 wanted to have a complex (not just a numeric ID and a couple of String
 attributes) JPA model and a Criteria based queries for that model that
 can be deployed to Cassandra, PostgreSQL, and MariaDB.
