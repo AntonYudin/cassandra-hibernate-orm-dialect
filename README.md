@@ -3,7 +3,7 @@ Hibernate ORM Cassandra Dialect and JDBC Driver
 
 * [Description](README.md#description)
 * [Reasons](README.md#reasons)
-* [JPA Cassandra model example](README.md#)
+* [JPA Cassandra model example](README.md#jpa-cassandra-model-example)
 * [Implementation Details](README.md#implementation-details)
 * [Running Tests](README.md#running-tests)
 
