@@ -3,6 +3,7 @@ Hibernate ORM Cassandra Dialect and JDBC Driver
 
 * [Description](README.md#description)
 * [Reasons](README.md#reasons)
+* [JPA Cassandra model example](README.md#)
 * [Implementation Details](README.md#implementation-details)
 * [Running Tests](README.md#running-tests)
 
@@ -45,6 +46,8 @@ The model also has to make sense for a sharded/distributed database.
 
 The ``jee-application/model/src/main/java`` folder contains an example
 of a model that works for Cassandra, PostgreSQL, and MariaDB.
+
+## JPA Cassandra model example
 
 ## Implementation Details
 
