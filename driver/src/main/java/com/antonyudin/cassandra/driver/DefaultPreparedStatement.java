@@ -46,6 +46,7 @@ import com.datastax.driver.core.ExecutionInfo;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.QueryTrace;
+import com.datastax.driver.core.LocalDate;
 
 
 public class DefaultPreparedStatement extends AbstractPreparedStatement {
@@ -298,6 +299,7 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 
 
 	private final boolean logContent = false;
+
 	protected void log(final String message) {
 		if (logContent)
 			logger.finest(message);
@@ -375,6 +377,16 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 		log("setTimestamp(" + parameterIndex + ", " + x + ")");
 		getBoundStatement().setTimestamp(parameterIndex - 1, x);
 	}
+
+	@Override
+	public void setDate(final int parameterIndex, final java.sql.Date x) throws SQLException {
+		log("setDate(" + parameterIndex + ", " + x + ")");
+		getBoundStatement().setDate(
+			parameterIndex - 1,
+			(x != null? LocalDate.fromMillisSinceEpoch(x.getTime()): null)
+		);
+	}
+
 
 	@Override
 	public void setObject(int parameterIndex, Object x, int targetSqlType) throws SQLException {

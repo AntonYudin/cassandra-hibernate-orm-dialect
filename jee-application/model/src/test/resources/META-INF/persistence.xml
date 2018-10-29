@@ -15,6 +15,15 @@
 
 		<mapping-file>META-INF/orm-cassandra.xml</mapping-file>
 
+		<class>com.antonyudin.cassandra.model.users.UserBasic</class>
+		<class>com.antonyudin.cassandra.model.users.UserFull</class>
+		<class>com.antonyudin.cassandra.model.users.User</class>
+		<class>com.antonyudin.cassandra.model.users.PostBasic</class>
+		<class>com.antonyudin.cassandra.model.users.PostFull</class>
+		<class>com.antonyudin.cassandra.model.users.Post</class>
+		<class>com.antonyudin.cassandra.model.users.UserPostId</class>
+		<class>com.antonyudin.cassandra.model.users.UserPost</class>
+
 		<class>com.antonyudin.cassandra.model.SourceId</class>
 		<class>com.antonyudin.cassandra.model.Source</class>
 		<class>com.antonyudin.cassandra.model.EventId</class>

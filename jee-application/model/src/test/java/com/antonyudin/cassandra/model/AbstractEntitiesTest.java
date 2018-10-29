@@ -29,6 +29,19 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.Persistence;
+import javax.persistence.EntityTransaction;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 import com.antonyudin.cassandra.model.Source;
 import com.antonyudin.cassandra.model.Source_;
@@ -46,16 +59,13 @@ import com.antonyudin.cassandra.model.EventChild;
 import com.antonyudin.cassandra.model.EventChild_;
 import com.antonyudin.cassandra.model.ItemAdded;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.Persistence;
-import javax.persistence.EntityTransaction;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.antonyudin.cassandra.model.users.User;
+import com.antonyudin.cassandra.model.users.UserBasic;
+import com.antonyudin.cassandra.model.users.UserFull;
+import com.antonyudin.cassandra.model.users.Post;
+import com.antonyudin.cassandra.model.users.PostBasic;
+import com.antonyudin.cassandra.model.users.PostFull;
+import com.antonyudin.cassandra.model.users.UserPost;
 
 
 public abstract class AbstractEntitiesTest extends AbstractTest {
@@ -970,6 +980,38 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 
 	}
 
+
+	@org.junit.jupiter.api.Test
+	public void testPersistUsersAndPosts() {
+
+
+		final List<User> users = new ArrayList<>();
+
+		for (int i = 0; i < 10; i++) {
+
+			final User user = new User();
+			user.setIdentity(java.util.UUID.randomUUID());
+			user.setName("user name " + i);
+			user.setDateOfBirth(
+				LocalDate.of(
+					2018,
+					(int) ((Math.random() * 12) + 1),
+					(int) ((Math.random() * 28) + 1)
+				)
+			);
+			users.add(user);
+		}
+
+		final EntityTransaction transaction = entityManager.getTransaction();
+
+		transaction.begin();
+
+		for (User user: users)
+			entityManager.persist(user);
+
+		entityManager.flush();
+		transaction.commit();
+	}
 
 }
 
