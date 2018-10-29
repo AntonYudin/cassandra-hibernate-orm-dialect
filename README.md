@@ -4,6 +4,7 @@ Hibernate ORM Cassandra Dialect and JDBC Driver
 * [Description](README.md#description)
 * [Reasons](README.md#reasons)
 * [Implementation Details](README.md#implementation-details)
+* [Running Tests](README.md#running-tests)
 
 ## Description
 This is an open-source JDBC driver and Hibernate ORM Dialect for Cassandra.
@@ -72,5 +73,7 @@ generated the schema, one could grab the table
 structure using ``describe TABLE`` CQL command and change the order of
 the fields in the primary key and re-create
 the table.
+
+## Running Tests
 
 
