@@ -51,17 +51,17 @@ public class UserPostId implements java.io.Serializable {
 	}
 
 
-	private LocalDateTime created = null;
+	private LocalDateTime postCreated = null;
 
 	@Column(
 		name = "post_created"
 	)
-	public LocalDateTime getCreated() {
-		return created;
+	public LocalDateTime getPostCreated() {
+		return postCreated;
 	}
 
-	public void setCreated(final LocalDateTime value) {
-		created = value;
+	public void setPostCreated(final LocalDateTime value) {
+		postCreated = value;
 	}
 
 

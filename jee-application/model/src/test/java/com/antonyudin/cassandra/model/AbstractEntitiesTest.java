@@ -66,6 +66,7 @@ import com.antonyudin.cassandra.model.users.Post;
 import com.antonyudin.cassandra.model.users.PostBasic;
 import com.antonyudin.cassandra.model.users.PostFull;
 import com.antonyudin.cassandra.model.users.UserPost;
+import com.antonyudin.cassandra.model.users.UserPostId;
 
 
 public abstract class AbstractEntitiesTest extends AbstractTest {
@@ -1010,6 +1011,57 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 			entityManager.persist(user);
 
 		entityManager.flush();
+		transaction.commit();
+
+
+		final List<Post> posts = new ArrayList<>();
+		final List<UserPost> userPosts = new ArrayList<>();
+
+		for (int i = 0; i < 10; i++) {
+
+			final Post post = new Post();
+			post.setIdentity(java.util.UUID.randomUUID());
+			post.setTitle("title " + i);
+			post.setCreated(LocalDateTime.now());
+			post.setContent("content " + i);
+			post.setAuthor(users.get(i));
+
+			posts.add(post);
+
+			final UserPost userPost = new UserPost();
+			userPost.setId(new UserPostId());
+			userPost.getId().setPostIdentity(post.getIdentity());
+			userPost.getId().setPostCreated(post.getCreated());
+			userPost.getId().setUserIdentity(post.getAuthorIdentity());
+			userPost.setPost(post);
+
+			userPosts.add(userPost);
+		}
+
+		transaction.begin();
+
+		for (Post post: posts) {
+			entityManager.persist(post);
+		}
+
+		for (UserPost userPost: userPosts)
+			entityManager.persist(userPost);
+
+		entityManager.flush();
+		transaction.commit();
+		entityManager.clear();
+
+
+		transaction.begin();
+
+		final Post post = entityManager.find(Post.class, posts.get(0).getIdentity());
+
+		logger.info("post: [" + post + "]");
+
+		final User user = post.getUser();
+
+		logger.info("user: [" + user + "]");
+
 		transaction.commit();
 	}
 

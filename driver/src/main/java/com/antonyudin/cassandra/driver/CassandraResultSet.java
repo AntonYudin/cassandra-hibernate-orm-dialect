@@ -1,5 +1,10 @@
 
 /*
+ * vim: set nowrap:
+ *
+ */
+ 
+/*
  * Copyright Anton Yudin, https://antonyudin.com/software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +20,6 @@
  * limitations under the License.
  */
 
-/*
- * vim: set nowrap:
- *
- */
- 
 package com.antonyudin.cassandra.driver;
 
 
@@ -193,6 +193,20 @@ public class CassandraResultSet extends AbstractResultSet {
 
 		return new SerialBlob(result);
 	}
+
+
+	@Override
+	public java.sql.Date getDate(final String columnLabel) throws SQLException {
+
+		lastWasNull = currentRow.isNull(columnLabel);
+
+		return (
+			lastWasNull?
+			null:
+			new java.sql.Date(currentRow.getDate(columnLabel).getMillisSinceEpoch())
+		);
+	}
+
 
 }
 

@@ -28,6 +28,9 @@ import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
 
 
 @Entity
@@ -45,6 +48,19 @@ public class Post extends PostFull {
 	@Id
 	public UUID getIdentity() {
 		return super.getIdentity();
+	}
+
+
+	private User user;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "author_identity", insertable = false, updatable = false)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(final User value) {
+		user = value;
 	}
 
 }
