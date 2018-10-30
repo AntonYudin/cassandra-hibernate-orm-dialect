@@ -63,6 +63,7 @@ import com.antonyudin.cassandra.model.users.User;
 import com.antonyudin.cassandra.model.users.UserBasic;
 import com.antonyudin.cassandra.model.users.UserFull;
 import com.antonyudin.cassandra.model.users.Post;
+import com.antonyudin.cassandra.model.users.Post_;
 import com.antonyudin.cassandra.model.users.PostBasic;
 import com.antonyudin.cassandra.model.users.PostFull;
 import com.antonyudin.cassandra.model.users.UserPost;
@@ -1033,6 +1034,7 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 			userPost.getId().setPostIdentity(post.getIdentity());
 			userPost.getId().setPostCreated(post.getCreated());
 			userPost.getId().setUserIdentity(post.getAuthorIdentity());
+			userPost.setPostBasic(post);
 			userPost.setPost(post);
 
 			userPosts.add(userPost);
@@ -1054,13 +1056,66 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 
 		transaction.begin();
 
-		final Post post = entityManager.find(Post.class, posts.get(0).getIdentity());
+		{
+			final Post post = entityManager.find(Post.class, posts.get(0).getIdentity());
 
-		logger.info("post: [" + post + "]");
+			logger.info("post: [" + post + "]");
 
-		final User user = post.getUser();
+			assertTrue(post != null);
 
-		logger.info("user: [" + user + "]");
+			final User user = post.getUser();
+
+			logger.info("user: [" + user + "]");
+
+			assertTrue(user != null);
+
+			assertTrue(user.getIdentity().equals(users.get(0).getIdentity()));
+
+		}
+
+		transaction.commit();
+
+
+		transaction.begin();
+
+		{
+
+			final CriteriaQuery<Post> criteria = entityManager.getCriteriaBuilder().createQuery(
+				Post.class
+			);
+
+			final Root<Post> items = criteria.from(Post.class);
+
+			criteria.select(items);
+
+			criteria.where(
+				entityManager.getCriteriaBuilder().equal(
+					items.get(Post_.identity),
+					posts.get(0).getIdentity()
+				)
+			);
+
+
+			final List<Post> foundPosts = entityManager.createQuery(
+				criteria
+			).getResultList();
+		}
+
+		transaction.commit();
+
+		transaction.begin();
+
+		{
+			final User user = entityManager.find(User.class, users.get(0).getIdentity());
+
+			logger.info("user: [" + user + "]");
+
+			assertTrue(user != null);
+
+			logger.info("user.posts: [" + user.getPosts() + "]");
+
+			assertTrue(user.getPosts() != null);
+		}
 
 		transaction.commit();
 	}

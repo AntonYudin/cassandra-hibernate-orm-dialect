@@ -2,6 +2,7 @@
 DROP TABLE events;
 DROP TABLE event_children;
 DROP TABLE children;
+DROP TABLE user_posts;
 
 CREATE TABLE event_children (source_identity_value uuid, child_id bigint, identity uuid, type text, groupname text, reference bigint, created timestamp, PRIMARY KEY (source_identity_value, identity, type, groupname, reference, created, child_id));
 
@@ -12,4 +13,6 @@ CREATE TABLE children (child_id bigint, parent_id bigint, PRIMARY KEY (parent_id
 CREATE INDEX events_index_content on events (content);
 
 CREATE CUSTOM INDEX events_index_content2 ON events (content2) USING 'org.apache.cassandra.index.sasi.SASIIndex' WITH OPTIONS = { 'analyzer_class': 'org.apache.cassandra.index.sasi.analyzer.NonTokenizingAnalyzer', 'case_sensitive': 'false', 'mode': 'CONTAINS'};
+
+CREATE TABLE jee.user_posts (user_identity uuid, post_identity uuid, post_created timestamp, title text, PRIMARY KEY (user_identity, post_identity, post_created)) WITH CLUSTERING ORDER BY (post_identity ASC, post_created DESC);
 

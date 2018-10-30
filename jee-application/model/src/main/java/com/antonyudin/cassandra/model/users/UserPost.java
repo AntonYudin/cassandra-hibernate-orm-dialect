@@ -29,6 +29,9 @@ import javax.persistence.Table;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Embedded;
 import javax.persistence.AttributeOverride;
+import javax.persistence.MapsId;
+import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
 
 
 @Entity
@@ -54,7 +57,7 @@ public class UserPost implements java.io.Serializable {
 	}
 
 
-	private PostBasic post;
+	private PostBasic postBasic;
 
 	@Embedded
 	@AttributeOverride(
@@ -65,13 +68,40 @@ public class UserPost implements java.io.Serializable {
 			updatable = false
 		)
 	)
-	public PostBasic getPost() {
+	public PostBasic getPostBasic() {
+		return postBasic;
+	}
+
+	public void setPostBasic(final PostBasic value) {
+		postBasic = value;
+	}
+
+
+	private User user;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@MapsId("user_identity")
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(final User value) {
+		user = value;
+	}
+
+
+	private Post post;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@MapsId("post_identity")
+	public Post getPost() {
 		return post;
 	}
 
-	public void setPost(final PostBasic value) {
+	public void setPost(final Post value) {
 		post = value;
 	}
+
 
 }
 

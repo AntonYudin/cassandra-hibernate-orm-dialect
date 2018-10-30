@@ -25,9 +25,15 @@ package com.antonyudin.cassandra.model.users;
 
 import java.util.UUID;
 
+
+import java.util.List;
+import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -45,6 +51,18 @@ public class User extends UserFull {
 	@Id
 	public UUID getIdentity() {
 		return super.getIdentity();
+	}
+
+
+	private List<UserPost> posts = new ArrayList<>();
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	public List<UserPost> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(final List<UserPost> value) {
+		posts = value;
 	}
 
 }
