@@ -3,7 +3,7 @@ Hibernate ORM Cassandra Dialect and JDBC Driver
 
 * [Description](README.md#description)
 * [Reasons](README.md#reasons)
-* [JPA Cassandra model example](README.md#jpa-cassandra-model-example)
+* [Cassandra model example](README.md#cassandra-model-example)
 * [Implementation Details](README.md#implementation-details)
 * [Running Tests](README.md#running-tests)
 
@@ -47,7 +47,46 @@ The model also has to make sense for a sharded/distributed database.
 The ``jee-application/model/src/main/java`` folder contains an example
 of a model that works for Cassandra, PostgreSQL, and MariaDB.
 
-## JPA Cassandra model example
+## Cassandra model example
+
+Lets take a common example - users and their posts.
+One user can have multiple posts. We should be able to:
+* search users by their ID.
+* search posts by their ID.
+* search posts by their ID and the date of the post.
+* when we find a post in the previous search, get access to the user ID and name without an extra query
+* find all post IDs, titles and creation date posted by a user and do it efficiently - without quering the whole cluster.
+* get access to the full post entity after we did a previous search by using an entity property.
+
+here are the tables in cassandra:
+
+``
+CREATE TABLE jee.users (
+    identity uuid PRIMARY KEY,
+    dateofbirth date,
+    name text
+)
+``
+``
+CREATE TABLE jee.posts (
+    identity uuid PRIMARY KEY,
+    author_identity uuid,
+    author_name text,
+    content text,
+    created timestamp,
+    title text
+)
+``
+``
+CREATE TABLE jee.user_posts (
+    user_identity uuid,
+    post_identity uuid,
+    post_created timestamp,
+    title text,
+    PRIMARY KEY (user_identity, post_identity, post_created)
+) WITH CLUSTERING ORDER BY (post_identity ASC, post_created DESC)
+``
+
 
 ## Implementation Details
 
