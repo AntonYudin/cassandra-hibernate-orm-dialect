@@ -60,15 +60,15 @@ One user can have multiple posts. We should be able to:
 
 here are the tables in cassandra:
 
-``
+```
 CREATE TABLE jee.users (
     identity uuid PRIMARY KEY,
     dateofbirth date,
     name text
 )
-``
+```
 
-``
+```
 CREATE TABLE jee.posts (
     identity uuid PRIMARY KEY,
     author_identity uuid,
@@ -77,9 +77,9 @@ CREATE TABLE jee.posts (
     created timestamp,
     title text
 )
-``
+```
 
-``
+```
 CREATE TABLE jee.user_posts (
     user_identity uuid,
     post_identity uuid,
@@ -87,7 +87,7 @@ CREATE TABLE jee.user_posts (
     title text,
     PRIMARY KEY (user_identity, post_identity, post_created)
 ) WITH CLUSTERING ORDER BY (post_identity ASC, post_created DESC)
-``
+```
 
 
 ## Implementation Details
