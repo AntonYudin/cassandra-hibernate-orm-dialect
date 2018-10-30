@@ -67,6 +67,7 @@ CREATE TABLE jee.users (
     name text
 )
 ``
+
 ``
 CREATE TABLE jee.posts (
     identity uuid PRIMARY KEY,
@@ -77,6 +78,7 @@ CREATE TABLE jee.posts (
     title text
 )
 ``
+
 ``
 CREATE TABLE jee.user_posts (
     user_identity uuid,
