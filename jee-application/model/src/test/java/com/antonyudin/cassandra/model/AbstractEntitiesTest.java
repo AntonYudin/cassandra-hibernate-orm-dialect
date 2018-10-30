@@ -1115,6 +1115,16 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 			logger.info("user.posts: [" + user.getPosts() + "]");
 
 			assertTrue(user.getPosts() != null);
+
+			for (UserPost post: user.getPosts()) {
+
+				logger.info("\tpost.id.postIdentity: [" + post.getId().getPostIdentity() + "]");
+				logger.info("\tpost.identity: [" + post.getPostBasic().getIdentity() + "]");
+				logger.info("\tpost.created: [" + post.getPostBasic().getCreated() + "]");
+				logger.info("\tpost.title: [" + post.getPostBasic().getTitle() + "]");
+
+				logger.info("\tpost.post.content: [" + post.getPost().getContent() + "]");
+			}
 		}
 
 		transaction.commit();

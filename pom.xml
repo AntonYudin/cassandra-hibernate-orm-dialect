@@ -25,6 +25,9 @@
 		<maven.ejb.plugin.version>3.0.1</maven.ejb.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+		<!--
+		<excluded.tests>mariadb, infinispan, cassandra, mongodb, postgresql</excluded.tests>
+		-->
 		<excluded.tests>mariadb, infinispan, mongodb, postgresql</excluded.tests>
 	</properties>
 

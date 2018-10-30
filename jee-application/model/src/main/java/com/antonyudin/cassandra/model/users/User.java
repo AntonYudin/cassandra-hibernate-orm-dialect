@@ -25,7 +25,6 @@ package com.antonyudin.cassandra.model.users;
 
 import java.util.UUID;
 
-
 import java.util.List;
 import java.util.ArrayList;
 

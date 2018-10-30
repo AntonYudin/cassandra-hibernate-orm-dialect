@@ -29,6 +29,7 @@ import javax.persistence.Table;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Embedded;
 import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.MapsId;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
@@ -60,14 +61,24 @@ public class UserPost implements java.io.Serializable {
 	private PostBasic postBasic;
 
 	@Embedded
-	@AttributeOverride(
-		name = "created",
-		column = @Column(
-			name = "post_created",
-			insertable = false,
-			updatable = false
+	@AttributeOverrides({
+		@AttributeOverride(
+			name = "created",
+			column = @Column(
+				name = "post_created",
+				insertable = false,
+				updatable = false
+			)
+		),
+		@AttributeOverride(
+			name = "identity",
+			column = @Column(
+				name = "post_identity",
+				insertable = false,
+				updatable = false
+			)
 		)
-	)
+	})
 	public PostBasic getPostBasic() {
 		return postBasic;
 	}
