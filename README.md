@@ -117,10 +117,10 @@ for (UserPost post: user.getPosts()) {
 	logger.info("\tpost.created: [" + post.getPostBasic().getCreated() + "]");
 	logger.info("\tpost.title: [" + post.getPostBasic().getTitle() + "]");
 }
-```java
+```
 
 Getting the content for the most recent user post looks like that:
-```
+```java
 final String content = user.getPosts().get(0).getPost().getContent();
 ```
 
