@@ -106,18 +106,18 @@ Here are the classses:
 
 
 Finding a user looks trivial:
-```
+```java
 final User user = entityManager.find(User.class, identity);
 ```
 
 Getting all posts with their "Basic" information in one efficient query looks like:
-```
+```java
 for (UserPost post: user.getPosts()) {
 	logger.info("\tpost.id.postIdentity: [" + post.getId().getPostIdentity() + "]");
 	logger.info("\tpost.created: [" + post.getPostBasic().getCreated() + "]");
 	logger.info("\tpost.title: [" + post.getPostBasic().getTitle() + "]");
 }
-```
+```java
 
 Getting the content for the most recent user post looks like that:
 ```
