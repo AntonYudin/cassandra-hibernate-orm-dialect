@@ -89,6 +89,15 @@ CREATE TABLE jee.user_posts (
 ) WITH CLUSTERING ORDER BY (post_identity ASC, post_created DESC)
 ```
 
+To design entity classes for this model, lets devide the information about a user into two levels - basic (identity, name) and full (identity, name, dateOfBirth). Lets do the same for the posts - basic (identity, created, title) and full (identity, create, title, content).
+
+Here are the entities:
+* [UserBasic.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/UserBasic.java)
+* [UserFull.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/UserFull.java)
+* [PostBasic.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/PostBasic.java)
+* [PostFull.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/PostFull.java)
+      
+
 
 ## Implementation Details
 
