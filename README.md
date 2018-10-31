@@ -89,14 +89,20 @@ CREATE TABLE jee.user_posts (
 ) WITH CLUSTERING ORDER BY (post_identity ASC, post_created DESC)
 ```
 
-To design entity classes for this model, lets devide the information about a user into two levels - basic (identity, name) and full (identity, name, dateOfBirth). Lets do the same for the posts - basic (identity, created, title) and full (identity, create, title, content).
+To design java classes for this model, lets devide the information about a user into two levels - basic (identity, name) and full (identity, name, dateOfBirth). Lets do the same for the posts - basic (identity, created, title) and full (identity, create, title, content). The "full" version of the class inherits the "basic" version.
 
-Here are the entities:
+Here are the classes:
 * [UserBasic.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/UserBasic.java)
 * [UserFull.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/UserFull.java)
 * [PostBasic.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/PostBasic.java)
 * [PostFull.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/PostFull.java)
-      
+
+The actual User entity class inherits the Full version and adds a ``@OneToMany`` association with a UserPost entity. The UserPost entity is a denormalized version User/Post association. The UserPost entity has a reference to both User and Post and also contains the Basic information about the Post (created date and title, but no content of the post). The Post has a reference to user and contains user's Basic information (name).
+
+Here are the classses:
+* [User.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/User.java)
+* [Post.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/Post.java)
+* [UserPost.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/UserPost.java)
 
 
 ## Implementation Details
