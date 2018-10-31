@@ -97,12 +97,33 @@ Here are the classes:
 * [PostBasic.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/PostBasic.java)
 * [PostFull.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/PostFull.java)
 
-The actual User entity class inherits the Full version and adds a ``@OneToMany`` association with a UserPost entity. The UserPost entity is a denormalized version User/Post association. The UserPost entity has a reference to both User and Post and also contains the Basic information about the Post (created date and title, but no content of the post). The Post has a reference to user and contains user's Basic information (name).
+The actual User entity class inherits the Full version and adds a ``@OneToMany`` association with the UserPost entity. The UserPost entity is a de-normalized version of the User-Post association. The UserPost entity has a reference to both User and Post and also contains the Basic information about the Post (created date and title, but no content of the post). The Post has a reference to the user and contains user's Basic information (name). The UserPost entity allows us to find all posts by a user and get the identity, created date, and title of the post in one efficient query.
 
 Here are the classses:
 * [User.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/User.java)
 * [Post.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/Post.java)
 * [UserPost.java](jee-application/model/src/main/java/com/antonyudin/cassandra/model/users/UserPost.java)
+
+
+Finding a user looks trivial:
+```
+final User user = entityManager.find(User.class, identity);
+```
+
+Getting all posts with their "Basic" information in one efficient query looks like:
+```
+for (UserPost post: user.getPosts()) {
+	logger.info("\tpost.id.postIdentity: [" + post.getId().getPostIdentity() + "]");
+	logger.info("\tpost.created: [" + post.getPostBasic().getCreated() + "]");
+	logger.info("\tpost.title: [" + post.getPostBasic().getTitle() + "]");
+}
+```
+
+Getting the content for the most recent user post looks like that:
+```
+final String content = user.getPosts().get(0).getPost().getContent();
+```
+
 
 
 ## Implementation Details
