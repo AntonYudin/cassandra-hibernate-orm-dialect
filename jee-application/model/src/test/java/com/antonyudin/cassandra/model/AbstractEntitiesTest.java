@@ -67,7 +67,9 @@ import com.antonyudin.cassandra.model.users.Post_;
 import com.antonyudin.cassandra.model.users.PostBasic;
 import com.antonyudin.cassandra.model.users.PostFull;
 import com.antonyudin.cassandra.model.users.UserPost;
+import com.antonyudin.cassandra.model.users.UserPost_;
 import com.antonyudin.cassandra.model.users.UserPostId;
+import com.antonyudin.cassandra.model.users.UserPostId_;
 
 
 public abstract class AbstractEntitiesTest extends AbstractTest {
@@ -1089,16 +1091,22 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 			criteria.select(items);
 
 			criteria.where(
-				entityManager.getCriteriaBuilder().equal(
-					items.get(Post_.identity),
-					posts.get(0).getIdentity()
+				entityManager.getCriteriaBuilder().and(
+					entityManager.getCriteriaBuilder().equal(
+						items.get(Post_.identity),
+						posts.get(0).getIdentity()
+					)
 				)
 			);
-
 
 			final List<Post> foundPosts = entityManager.createQuery(
 				criteria
 			).getResultList();
+
+			logger.info("found [" + foundPosts.size() + "] posts");
+
+			for (Post post: foundPosts)
+				logger.info("post: [" + post + "]");
 		}
 
 		transaction.commit();
@@ -1128,6 +1136,48 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 		}
 
 		transaction.commit();
+
+		transaction.begin();
+
+		{
+
+			final CriteriaQuery<UserPost> criteria = entityManager.getCriteriaBuilder().createQuery(
+				UserPost.class
+			);
+
+			final Root<UserPost> items = criteria.from(UserPost.class);
+
+			criteria.select(items);
+
+			criteria.where(
+				entityManager.getCriteriaBuilder().and(
+					entityManager.getCriteriaBuilder().equal(
+						items.get(UserPost_.id).get(UserPostId_.userIdentity),
+						users.get(0).getIdentity()
+					),
+					entityManager.getCriteriaBuilder().greaterThanOrEqualTo(
+						items.get(UserPost_.id).get(UserPostId_.postCreated),
+						LocalDateTime.of(2018, 1, 1, 0, 0, 0)
+					),
+					entityManager.getCriteriaBuilder().lessThanOrEqualTo(
+						items.get(UserPost_.id).get(UserPostId_.postCreated),
+						LocalDateTime.now()
+					)
+				)
+			);
+
+			final List<UserPost> foundPosts = entityManager.createQuery(
+				criteria
+			).getResultList();
+
+			logger.info("found [" + foundPosts.size() + "] posts");
+
+			for (UserPost post: foundPosts)
+				logger.info("post: [" + post + "]");
+		}
+
+		transaction.commit();
+
 	}
 
 }

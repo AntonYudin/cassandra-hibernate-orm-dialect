@@ -14,5 +14,5 @@ CREATE INDEX events_index_content on events (content);
 
 CREATE CUSTOM INDEX events_index_content2 ON events (content2) USING 'org.apache.cassandra.index.sasi.SASIIndex' WITH OPTIONS = { 'analyzer_class': 'org.apache.cassandra.index.sasi.analyzer.NonTokenizingAnalyzer', 'case_sensitive': 'false', 'mode': 'CONTAINS'};
 
-CREATE TABLE jee.user_posts (user_identity uuid, post_identity uuid, post_created timestamp, title text, PRIMARY KEY (user_identity, post_identity, post_created)) WITH CLUSTERING ORDER BY (post_identity ASC, post_created DESC);
+CREATE TABLE jee.user_posts (user_identity uuid, post_created timestamp, post_identity uuid, title text, PRIMARY KEY (user_identity, post_created, post_identity)) WITH CLUSTERING ORDER BY (post_created DESC, post_identity ASC);
 

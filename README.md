@@ -85,8 +85,8 @@ CREATE TABLE jee.user_posts (
     post_identity uuid,
     post_created timestamp,
     title text,
-    PRIMARY KEY (user_identity, post_identity, post_created)
-) WITH CLUSTERING ORDER BY (post_identity ASC, post_created DESC)
+    PRIMARY KEY (user_identity, post_created, post_identity)
+) WITH CLUSTERING ORDER BY (post_created DESC, post_identity ASC)
 ```
 
 To design java classes for this model, lets devide the information about a user into two levels - basic (identity, name) and full (identity, name, dateOfBirth). Lets do the same for the posts - basic (identity, created, title) and full (identity, create, title, content). The "full" version of the class inherits the "basic" version.
@@ -124,6 +124,39 @@ Getting the content for the most recent user post looks like that:
 final String content = user.getPosts().get(0).getPost().getContent();
 ```
 
+
+Fetching user's posts limited by a date range using the Criteria API looks like this:
+
+```java
+final CriteriaQuery<UserPost> criteria = entityManager.getCriteriaBuilder().createQuery(
+	UserPost.class
+);
+
+final Root<UserPost> items = criteria.from(UserPost.class);
+
+criteria.select(items);
+
+criteria.where(
+	entityManager.getCriteriaBuilder().and(
+		entityManager.getCriteriaBuilder().equal(
+			items.get(UserPost_.id).get(UserPostId_.userIdentity),
+			userIdentity
+		),
+		entityManager.getCriteriaBuilder().greaterThanOrEqualTo(
+			items.get(UserPost_.id).get(UserPostId_.postCreated),
+			dateFrom
+		),
+		entityManager.getCriteriaBuilder().lessThanOrEqualTo(
+			items.get(UserPost_.id).get(UserPostId_.postCreated),
+			dateTo
+		)
+	)
+);
+
+final List<UserPost> foundPosts = entityManager.createQuery(
+	criteria
+).getResultList();
+```
 
 
 ## Implementation Details
