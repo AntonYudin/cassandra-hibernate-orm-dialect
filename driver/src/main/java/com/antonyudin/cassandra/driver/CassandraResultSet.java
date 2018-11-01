@@ -90,6 +90,13 @@ public class CassandraResultSet extends AbstractResultSet {
 		return currentRow.getString(columnLabel);
 	}
 
+	// XXX not used by hibernate
+	@Override
+	public String getString(final int columnIndex) throws SQLException {
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+		return currentRow.getString(columnIndex - 1);
+	}
+
 	@Override
 	public boolean getBoolean(final String columnLabel) throws SQLException {
 		lastWasNull = currentRow.isNull(columnLabel);
@@ -142,6 +149,21 @@ public class CassandraResultSet extends AbstractResultSet {
 			new java.sql.Timestamp(currentRow.getTimestamp(columnLabel).getTime())
 		);
 	}
+
+	// XXX not used by hibernate
+	@Override
+	public java.sql.Timestamp getTimestamp(final int columnIndex) throws SQLException {
+
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+
+		return (
+			lastWasNull?
+			null:
+			new java.sql.Timestamp(currentRow.getTimestamp(columnIndex - 1).getTime())
+		);
+	}
+
+
 
 	@Override
 	public ResultSetMetaData getMetaData() throws SQLException {

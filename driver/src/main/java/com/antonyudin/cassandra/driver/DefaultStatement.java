@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 
 import java.sql.SQLException;
 import java.sql.SQLWarning;
+import java.sql.ResultSet;
 
 import com.datastax.driver.core.Session;
 
@@ -39,9 +40,15 @@ public class DefaultStatement extends AbstractStatement {
 	private final DefaultConnection connection;
 	private final Session session;
 	private final Warnings warnings = new Warnings();
+	private final Driver.Context driverContext;
 
 
-	DefaultStatement(final DefaultConnection connection, final Session session) {
+	DefaultStatement(
+		final Driver.Context driverContext,
+		final DefaultConnection connection,
+		final Session session
+	) {
+		this.driverContext = driverContext;
 		this.connection = connection;
 		this.session = session;
 	}
@@ -64,13 +71,17 @@ public class DefaultStatement extends AbstractStatement {
 		warnings.clear();
 	}
 
+
+	private	com.datastax.driver.core.ResultSet resultSet = null;
+
 	@Override
 	public boolean execute(final String sql) throws SQLException {
 
 		final String transformedSQL = transformSQL(sql);
 
 		if (transformedSQL.length() > 0) {
-			final com.datastax.driver.core.ResultSet resultSet = session.execute(
+
+			resultSet = session.execute(
 				transformSQL(sql)
 			);
 
@@ -87,6 +98,26 @@ public class DefaultStatement extends AbstractStatement {
 	@Override
 	public boolean isClosed() throws SQLException {
 		return closed;
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public void setMaxRows(final int max) throws SQLException {
+		logger.warning("setMaxRows() not implemented");
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public int getUpdateCount() throws SQLException {
+		return -1;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public ResultSet getResultSet() throws SQLException {
+		return new CassandraResultSet(driverContext, resultSet);
 	}
 
 }

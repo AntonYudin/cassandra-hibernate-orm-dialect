@@ -176,6 +176,8 @@ public class Driver implements java.sql.Driver {
 				return Types.OTHER;
 			else if (type == DataType.timestamp())
 				return Types.TIMESTAMP;
+			else if (type == DataType.date())
+				return Types.TIMESTAMP;
 			else if (type == DataType.cint())
 				return Types.INTEGER;
 			else if (type == DataType.cboolean())
@@ -186,6 +188,8 @@ public class Driver implements java.sql.Driver {
 				return Types.DOUBLE;
 			else if (type == DataType.cfloat())
 				return Types.FLOAT;
+			else if (type == DataType.smallint())
+				return Types.SMALLINT;
 			else if (type == DataType.smallint())
 				return Types.SMALLINT;
 

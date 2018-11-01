@@ -83,4 +83,43 @@ public class CassandraResultSetMetaData extends AbstractResultSetMetaData {
 		);
 	}
 
+
+	// XXX not used by hibernate
+	@Override
+	public String getColumnName(final int column) throws SQLException {
+		return resultSet.getColumnDefinitions().getName(column - 1);
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public String getTableName(final int column) throws SQLException {
+		return resultSet.getColumnDefinitions().getTable(column - 1);
+	//	return ""; // not applicable
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public String getColumnTypeName(final int column) throws SQLException {
+		return resultSet.getColumnDefinitions().getType(column - 1).getName().toString();
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public int getColumnDisplaySize(final int column) throws SQLException {
+		return 64;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public int isNullable(final int column) throws SQLException {
+		return columnNullableUnknown;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public boolean isAutoIncrement(final int column) throws SQLException {
+		return false;
+	}
+
 }

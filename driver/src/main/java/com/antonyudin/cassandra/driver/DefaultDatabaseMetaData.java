@@ -659,6 +659,84 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 		return 3;
 	}
 
+	// XXX not used by hibernate
+	@Override
+	public boolean supportsTransactions() throws SQLException {
+		return false;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public ResultSet getCatalogs() throws SQLException {
+
+		final List<Object[]> list = new ArrayList<>();
+
+		list.add(new Object[0]);
+
+		final String[] names = {
+			"TABLE_CAT"
+		};
+
+		return new DefaultResultSet(names, list);
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public ResultSet getSchemas() throws SQLException {
+
+		final List<Object[]> list = new ArrayList<>();
+
+		list.add(new Object[] {keyspaceName, null});
+
+		final String[] names = {
+			"TABLE_SCHEM",
+			"TABLE_CATALOG"
+		};
+
+		return new DefaultResultSet(names, list);
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public ResultSet getTableTypes() throws SQLException {
+
+		final List<Object[]> list = new ArrayList<>();
+
+		list.add(new Object[] {"TABLE"});
+
+		final String[] names = {
+			"TABLE_TYPE"
+		};
+
+		return new DefaultResultSet(names, list);
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public ResultSet getPrimaryKeys(
+		final String catalog,
+		final String schema,
+		final String table
+	) throws SQLException {
+
+		final List<Object[]> list = new ArrayList<>();
+
+		list.add(new Object[] {});
+
+		final String[] names = {
+			"TABLE_CAT",
+			"TABLE_SCHEM",
+			"TABLE_NAME",
+			"COLUMN_NAME",
+			"KEY_SEQ",
+			"PK_NAME"
+		};
+
+		return new DefaultResultSet(names, list);
+	}
 
 }
 

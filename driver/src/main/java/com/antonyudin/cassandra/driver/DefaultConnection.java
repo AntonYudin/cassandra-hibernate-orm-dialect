@@ -92,7 +92,7 @@ public class DefaultConnection extends AbstractConnection {
 
 	@Override
 	public Statement createStatement() throws SQLException {
-		return new DefaultStatement(this, session);
+		return new DefaultStatement(driverContext, this, session);
 	}
 
 

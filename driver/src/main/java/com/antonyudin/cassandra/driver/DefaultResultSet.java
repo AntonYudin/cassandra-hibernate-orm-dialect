@@ -40,6 +40,7 @@ public class DefaultResultSet extends AbstractResultSet {
 
 
 	public DefaultResultSet(final String[] columnNames, final List<Object[]> rows) {
+
 		logger.info(
 			"DefaultResultSet(), rows.size: [" + (rows != null? rows.size(): null) +
 			"], logContent: [" + logContent + "]"
@@ -101,8 +102,19 @@ public class DefaultResultSet extends AbstractResultSet {
 
 	@Override
 	public String getString(final String columnLabel) throws SQLException {
-		return (String) getCurrentRow()[getColumnIndexByColumnName(columnLabel)];
+		final String result = (String) getCurrentRow()[getColumnIndexByColumnName(columnLabel)];
+		wasNullFlag = (result == null);
+		return result;
 	}
+
+	// XXX not used by hibernate
+	@Override
+	public String getString(final int columnIndex) throws SQLException {
+		final String result = (String) getCurrentRow()[columnIndex - 1];
+		wasNullFlag = (result == null);
+		return result;
+	}
+
 
 
 	protected int getColumnIndexByColumnName(final String columnName) {
@@ -144,6 +156,8 @@ public class DefaultResultSet extends AbstractResultSet {
 
 		final Short result = (Short) getCurrentRow()[getColumnIndexByColumnName(columnLabel)];
 
+		wasNullFlag = (result == null);
+
 		if (result == null)
 			return -1;
 
@@ -155,6 +169,8 @@ public class DefaultResultSet extends AbstractResultSet {
 
 		final Integer result = (Integer) getCurrentRow()[getColumnIndexByColumnName(columnLabel)];
 
+		wasNullFlag = (result == null);
+
 		if (result == null)
 			return -1;
 
@@ -163,10 +179,19 @@ public class DefaultResultSet extends AbstractResultSet {
 
 	@Override
 	public ResultSetMetaData getMetaData() throws SQLException {
-		return new DefaultResultSetMetaData();
+		return new DefaultResultSetMetaData(
+			columnNames
+		);
 	}
 
+	
+	private boolean wasNullFlag = false;
 
+	// XXX not used by hibernate
+	@Override
+	public boolean wasNull() throws SQLException {
+		return wasNullFlag;
+	}
 
 }
 
