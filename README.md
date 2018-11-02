@@ -2,6 +2,7 @@
 Hibernate ORM Cassandra Dialect and JDBC Driver
 
 * [Description](README.md#description)
+* [Supported Versions](README.md#supported-versions)
 * [Reasons](README.md#reasons)
 * [Cassandra model example](README.md#cassandra-model-example)
 * [Implementation Details](README.md#implementation-details)
