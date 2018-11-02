@@ -10,6 +10,13 @@ Hibernate ORM Cassandra Dialect and JDBC Driver
 ## Description
 This is an open-source JDBC driver and Hibernate ORM Dialect for Cassandra.
 
+## Supported versions
+The goal is to support the latest versions of Java, Hibernate, Cassandra, and Datastax driver.
+* Java 9 and 10
+* Cassandra 3.11.x
+* Hibernate 5.3.x
+* Datastax Driver 3.4.0
+
 ## Reasons
 There are several open source Cassandra JPA implementations out there,
 yet none of them support critical features that I often use in my
