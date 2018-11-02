@@ -102,17 +102,22 @@ public class DefaultResultSet extends AbstractResultSet {
 
 	@Override
 	public String getString(final String columnLabel) throws SQLException {
-		final String result = (String) getCurrentRow()[getColumnIndexByColumnName(columnLabel)];
-		wasNullFlag = (result == null);
-		return result;
+
+		final Object value = getCurrentRow()[getColumnIndexByColumnName(columnLabel)];
+
+		wasNullFlag = (value == null);
+
+		return (value != null? value.toString(): null);
 	}
 
 	// XXX not used by hibernate
 	@Override
 	public String getString(final int columnIndex) throws SQLException {
-		final String result = (String) getCurrentRow()[columnIndex - 1];
-		wasNullFlag = (result == null);
-		return result;
+		final Object value = getCurrentRow()[columnIndex - 1];
+
+		wasNullFlag = (value == null);
+
+		return (value != null? value.toString(): null);
 	}
 
 
@@ -165,7 +170,7 @@ public class DefaultResultSet extends AbstractResultSet {
 	}
 
 	@Override
-	public int getInt(String columnLabel) throws SQLException {
+	public int getInt(final String columnLabel) throws SQLException {
 
 		final Integer result = (Integer) getCurrentRow()[getColumnIndexByColumnName(columnLabel)];
 
@@ -176,6 +181,21 @@ public class DefaultResultSet extends AbstractResultSet {
 
 		return result.intValue();
 	}
+
+	// XXX not used by hibernate
+	@Override
+	public int getInt(final int columnIndex) throws SQLException {
+
+		final Integer result = (Integer) getCurrentRow()[columnIndex - 1];
+
+		wasNullFlag = (result == null);
+
+		if (result == null)
+			return -1;
+
+		return result.intValue();
+	}
+
 
 	@Override
 	public ResultSetMetaData getMetaData() throws SQLException {

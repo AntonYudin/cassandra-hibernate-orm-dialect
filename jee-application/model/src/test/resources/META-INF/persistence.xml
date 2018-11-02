@@ -53,6 +53,9 @@
 			-->
 			<property name="javax.persistence.jdbc.driver" value="com.antonyudin.cassandra.driver.Driver"/>
 			<property name="javax.persistence.schema-generation.database.action" value="create"/>
+			<!--
+			<property name="javax.persistence.schema-generation.database.action" value="update"/>
+			-->
 			<property name="javax.persistence.schema-generation.create-database-schemas" value="false"/>
 			<property name="javax.persistence.schema-generation.create-source" value="metadata-then-script"/>
 			<property name="javax.persistence.sql-load-script-source" value="META-INF/load-script.cql" />

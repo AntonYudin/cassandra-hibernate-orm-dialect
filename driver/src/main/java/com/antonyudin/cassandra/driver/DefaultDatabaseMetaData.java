@@ -152,10 +152,12 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 		for (TableMetadata tableMetadata: tablesMetadata) {
 
 			final String tableCatalog = null;
-			final String tableSchema = (keyspaceName != null? null: effectiveKeyspaceName);
+			final String tableSchema = (
+				keyspaceName != null? keyspaceName: effectiveKeyspaceName
+			);
 			final String tableName = tableMetadata.getName();
 			final String tableType = "TABLE";
-			final String remarks = null;
+			final String remarks = tableMetadata.exportAsString();
 			final String typeCatalog = null;
 			final String typeSchema = null;
 			final String typeName = null;
@@ -229,7 +231,9 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 		final String effectiveKeyspaceName = getEffectiveKeyspaceName(schemaPattern);
 
-		final KeyspaceMetadata keyspaceMetadata = cluster.getMetadata().getKeyspace(effectiveKeyspaceName);
+		final KeyspaceMetadata keyspaceMetadata = cluster.getMetadata().getKeyspace(
+			effectiveKeyspaceName
+		);
 
 		final Collection<TableMetadata> tablesMetadata = keyspaceMetadata.getTables();
 
@@ -239,15 +243,30 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 			final int columnPosition = 0;
 
+			final String tableName = tableMetadata.getName();
+
+			if (
+				(tableNamePattern != null) &&
+				(!tableName.equalsIgnoreCase(tableNamePattern))
+			)
+				continue;
+
 			for (ColumnMetadata columnMetadata: tableMetadata.getColumns()) {
 
 				final String tableCatalog = null;
-				final String tableSchema = (keyspaceName != null? null: effectiveKeyspaceName);
-				final String tableName = tableMetadata.getName();
+
+				final String tableSchema = (
+					keyspaceName != null? keyspaceName: effectiveKeyspaceName
+				);
 
 				final String columnName = columnMetadata.getName();
-				final Integer dataType = context.typeFromCassandraToSQL(columnMetadata.getType());
-				final String typeName = columnMetadata.getType().getName().toString();
+				final Integer dataType = context.typeFromCassandraToSQL(
+					columnMetadata.getType()
+				);
+
+				//final String typeName = columnMetadata.getType().getName().toString();
+				final String typeName = columnMetadata.getType().asFunctionParameterString();
+
 				final Integer columnSize = null;
 				final Integer bufferLength = null;
 				final Integer decimalDigits = null;
@@ -269,31 +288,32 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 				final Object[] row = new Object[24];
 
-				row[0] = tableCatalog;
-				row[1] = tableSchema;
-				row[2] = tableName;
+				row[0] = (String) tableCatalog;
+				row[1] = (String) tableSchema;
+				row[2] = (String) tableName;
 
-				row[3] = columnName;
-				row[4] = dataType;
-				row[5] = typeName;
-				row[6] = columnSize;
-				row[7] = bufferLength;
-				row[8] = decimalDigits;
-				row[9] = numPrecRadix;
-				row[10] = nullable;
-				row[11] = remarks;
-				row[12] = columnDef;
-				row[13] = sqlDataType;
-				row[14] = sqlDatetimeSub;
-				row[15] = charOctetLength;
-				row[16] = ordinalPosition;
-				row[17] = isNullable;
-				row[18] = scopeCatalog;
-				row[19] = scopeSchema;
-				row[20] = scopeTable;
-				row[21] = sourceDataType;
-				row[22] = isAutoincrement;
-				row[23] = isGeneratedColumn;
+				row[3] = (String) columnName;
+				row[4] = (Integer) dataType;
+				row[5] = (String) typeName;
+
+				row[6] = (Integer) columnSize;
+				row[7] = bufferLength; // is not used
+				row[8] = (Integer) decimalDigits;
+				row[9] = (Integer) numPrecRadix;
+				row[10] = (Integer) nullable;
+				row[11] = (String) remarks;
+				row[12] = (String) columnDef;
+				row[13] = (Integer) sqlDataType;
+				row[14] = (Integer) sqlDatetimeSub;
+				row[15] = (Integer) charOctetLength;
+				row[16] = (Integer) ordinalPosition;
+				row[17] = (String) isNullable;
+				row[18] = (String) scopeCatalog;
+				row[19] = (String) scopeSchema;
+				row[20] = (String) scopeTable;
+				row[21] = (Short) sourceDataType;
+				row[22] = (String) isAutoincrement;
+				row[23] = (String) isGeneratedColumn;
 
 				list.add(row);
 			}
@@ -307,6 +327,7 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 			"COLUMN_NAME",
 			"DATA_TYPE",
 			"TYPE_NAME",
+		//	"DATA_TYPE",
 			"COLUMN_SIZE",
 			"BUFFER_LENGTH",
 			"DECIMAL_DIGITS",
@@ -722,9 +743,64 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 		final String table
 	) throws SQLException {
 
+		logger.finest(
+			"getPrimaryKeys(" + catalog + ", " +
+			schema + ", " + table + ")"
+		);
+
+		final String effectiveKeyspaceName = getEffectiveKeyspaceName(schema);
+
+		final KeyspaceMetadata keyspaceMetadata = cluster.getMetadata().getKeyspace(
+			effectiveKeyspaceName
+		);
+
+		final Collection<TableMetadata> tablesMetadata = keyspaceMetadata.getTables();
+
 		final List<Object[]> list = new ArrayList<>();
 
-		list.add(new Object[] {});
+		for (TableMetadata tableMetadata: tablesMetadata) {
+
+			final int columnPosition = 0;
+
+			final String tableName = tableMetadata.getName();
+
+			if (
+				(table != null) &&
+				(!tableName.equalsIgnoreCase(table))
+			)
+				continue;
+
+			int i = 0;
+
+			for (ColumnMetadata columnMetadata: tableMetadata.getPrimaryKey()) {
+
+				final String tableCatalog = null;
+
+				final String tableSchema = (
+					keyspaceName != null? keyspaceName: effectiveKeyspaceName
+				);
+
+				final String columnName = columnMetadata.getName();
+
+				final Integer keySeq = i + 1;
+				final String pkName = null;
+
+				final Object[] row = new Object[6];
+
+				row[0] = (String) tableCatalog;
+				row[1] = (String) tableSchema;
+				row[2] = (String) tableName;
+
+				row[3] = (String) columnName;
+
+				row[4] = (Integer) keySeq;
+				row[5] = (String) pkName;
+
+				list.add(row);
+
+				i++;
+			}
+		}
 
 		final String[] names = {
 			"TABLE_CAT",

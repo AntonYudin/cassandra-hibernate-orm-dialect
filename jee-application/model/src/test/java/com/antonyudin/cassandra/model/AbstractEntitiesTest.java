@@ -291,27 +291,18 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 		).setParameter("identities", identities).getResultList();
 */
 
-		final List<Event> foundEvents = entityManager.createQuery(
-			"SELECT e FROM Event e WHERE e.id.sourceId.identity in (:sourceIdentities)"
+		final List<Object[]> foundEvents = entityManager.createQuery(
+			"SELECT e.id, e.content FROM Event e WHERE e.id.sourceId.identity in (:sourceIdentities)"
 		).setParameter("sourceIdentities", sourceIdentities).getResultList();
 
 		logger.info("found events: [" + foundEvents.size() + "]");
 
 	//	assertEquals(foundEvents.size(), 6);
 
-		for (Event event: foundEvents) {
+		for (Object[] item: foundEvents) {
 
-	//		logger.info("\tfound event: [" + event + "]");
-
-			for (EventChild child: event.getChildren()) {
-	//			logger.info("\t\tchild: [" + child + "]");
-
-			}
-
-			if (event instanceof ItemAdded)
-				assertEquals(event.getChildren().size(), 0);
-			else
-				assertEquals(event.getChildren().size(), 3);
+			logger.info("item[0], id: " + item[0]);
+			logger.info("item[1], content: " + item[1]);
 		}
 
 		transaction.commit();
@@ -564,6 +555,8 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 			result.add(event);
 
 			final ItemAdded itemAdded = createEvent(uuid, new ItemAdded(), sources);
+
+			itemAdded.setName(itemAdded.toString());
 
 			result.add(itemAdded);
 		}

@@ -23,6 +23,9 @@
 package com.antonyudin.cassandra.driver;
 
 
+import java.util.UUID;
+import java.util.List;
+
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
@@ -51,6 +54,184 @@ public class DefaultConnection extends AbstractConnection {
 	private final PreparedStatementsCache preparedStatementsCache;
 	private final ConnectionString connectionString;
 
+	public static class UUIDAsStringCodec
+		extends com.datastax.driver.extras.codecs.MappingCodec<String, UUID>
+	{
+
+		public UUIDAsStringCodec() {
+			super(com.datastax.driver.core.TypeCodec.uuid(), String.class);
+		}
+
+		@Override
+		protected UUID serialize(final String value) {
+			return (value != null? UUID.fromString(value): null);
+		}
+
+		@Override
+		protected String deserialize(final UUID value) {
+			return (value != null? value.toString(): null);
+		}
+	}
+
+	public static class SmallIntAsIntegerCodec
+		extends com.datastax.driver.extras.codecs.MappingCodec<Integer, Short>
+	{
+
+		public SmallIntAsIntegerCodec() {
+			super(com.datastax.driver.core.TypeCodec.smallInt(), Integer.class);
+		}
+
+		@Override
+		protected Short serialize(final Integer value) {
+
+			if (value == null)
+				return null;
+
+			return value.shortValue();
+		}
+
+		@Override
+		protected Integer deserialize(final Short value) {
+
+			if (value == null)
+				return null;
+
+			return value.intValue();
+		}
+	}
+
+
+
+	public static class FloatAsDoubleCodec
+		extends com.datastax.driver.extras.codecs.MappingCodec<Double, Float>
+	{
+
+		public FloatAsDoubleCodec() {
+			super(com.datastax.driver.core.TypeCodec.cfloat(), Double.class);
+		}
+
+		@Override
+		protected Float serialize(final Double value) {
+
+			if (value == null)
+				return null;
+
+			return value.floatValue();
+		}
+
+		@Override
+		protected Double deserialize(final Float value) {
+
+			if (value == null)
+				return null;
+
+			return value.doubleValue();
+		}
+	}
+
+
+
+
+	public static class DateAsStringCodec
+		extends com.datastax.driver.extras.codecs.MappingCodec<String, com.datastax.driver.core.LocalDate>
+	{
+
+		public DateAsStringCodec() {
+			super(com.datastax.driver.core.TypeCodec.date(), String.class);
+		}
+
+		@Override
+		protected com.datastax.driver.core.LocalDate serialize(final String value) {
+
+			if (value == null)
+				return null;
+
+			final String parts[] = value.split("/");
+
+			return com.datastax.driver.core.LocalDate.fromYearMonthDay(
+				Integer.valueOf(parts[0]),
+				Integer.valueOf(parts[1]),
+				Integer.valueOf(parts[2])
+			);
+		}
+
+		@Override
+		protected String deserialize(final com.datastax.driver.core.LocalDate value) {
+			if (value == null)
+				return null;
+			return ("" + value.getYear() + "/" + value.getMonth() + "/" + value.getDay());
+		}
+	}
+
+
+	public static class DateAsDateCodec
+		extends com.datastax.driver.extras.codecs.MappingCodec<java.util.Date, com.datastax.driver.core.LocalDate>
+	{
+
+		public DateAsDateCodec() {
+			super(com.datastax.driver.core.TypeCodec.date(), java.util.Date.class);
+		}
+
+		@Override
+		protected com.datastax.driver.core.LocalDate serialize(final java.util.Date value) {
+
+			if (value == null)
+				return null;
+
+			final java.time.LocalDate date = value.toInstant().atZone(
+				java.time.ZoneId.systemDefault()
+			).toLocalDate();
+
+			return com.datastax.driver.core.LocalDate.fromYearMonthDay(
+				date.getYear(),
+				date.getMonthValue(),
+				date.getDayOfMonth()
+			);
+		}
+
+		@Override
+		protected java.util.Date deserialize(final com.datastax.driver.core.LocalDate value) {
+
+			if (value == null)
+				return null;
+
+			return java.util.Date.from(
+				java.time.LocalDate.of(
+					value.getYear(), value.getMonth(), value.getDay()
+				).atStartOfDay(
+					java.time.ZoneId.systemDefault()
+				).toInstant()
+			);
+		}
+	}
+
+
+	public static class ListOfStringAsStringCodec
+		extends com.datastax.driver.extras.codecs.MappingCodec<String, List<String>>
+	{
+
+		public ListOfStringAsStringCodec() {
+			super(
+				com.datastax.driver.core.TypeCodec.list(
+					com.datastax.driver.core.TypeCodec.varchar()
+				),
+				String.class
+			);
+		}
+
+		@Override
+		protected List<String> serialize(final String value) {
+			logger.info("serialize(" + value + ")");
+			throw new IllegalArgumentException("not implemented");
+		}
+
+		@Override
+		protected String deserialize(final List<String> value) {
+			return (value != null? value.toString(): null);
+		}
+	}
+
+
 
 	DefaultConnection(final Driver.Context driverContext, final ConnectionString connectionString) {
 
@@ -68,6 +249,13 @@ public class DefaultConnection extends AbstractConnection {
 		logger.info("contact points: [" + builder.getContactPoints() + "]");
 
 		cluster = builder.build();
+		cluster.getConfiguration().getCodecRegistry().register(new UUIDAsStringCodec());
+	//	cluster.getConfiguration().getCodecRegistry().register(new DateAsStringCodec());
+		cluster.getConfiguration().getCodecRegistry().register(new DateAsDateCodec());
+		cluster.getConfiguration().getCodecRegistry().register(new FloatAsDoubleCodec());
+		cluster.getConfiguration().getCodecRegistry().register(new SmallIntAsIntegerCodec());
+	//	cluster.getConfiguration().getCodecRegistry().register(new ListOfStringAsStringCodec());
+
 
 		final String keyspaceNameFromConnectionString = connectionString.getKeyspace();
 

@@ -103,15 +103,29 @@ public class CassandraResultSet extends AbstractResultSet {
 		return currentRow.getBool(columnLabel);
 	}
 
+	// XXX not used by hibernate
 	@Override
-	public byte getByte(String columnLabel) throws SQLException {
+	public boolean getBoolean(final int columnIndex) throws SQLException {
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+		return currentRow.getBool(columnIndex - 1);
+	}
+
+	@Override
+	public byte getByte(final String columnLabel) throws SQLException {
 		throw new UnsupportedOperationException("not implemented yet");
 	}
 
 	@Override
-	public short getShort(String columnLabel) throws SQLException {
+	public short getShort(final String columnLabel) throws SQLException {
 		lastWasNull = currentRow.isNull(columnLabel);
 		return currentRow.getShort(columnLabel);
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public short getShort(final int columnIndex) throws SQLException {
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+		return currentRow.getShort(columnIndex - 1);
 	}
 
 	@Override
@@ -120,10 +134,24 @@ public class CassandraResultSet extends AbstractResultSet {
 		return currentRow.getInt(columnLabel);
 	}
 
+	// XXX not used by hibernate
+	@Override
+	public int getInt(final int columnIndex) throws SQLException {
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+		return currentRow.getInt(columnIndex - 1);
+	}
+
 	@Override
 	public long getLong(final String columnLabel) throws SQLException {
 		lastWasNull = currentRow.isNull(columnLabel);
 		return currentRow.getLong(columnLabel);
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public long getLong(final int columnIndex) throws SQLException {
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+		return currentRow.getLong(columnIndex - 1);
 	}
 
 	@Override
@@ -132,11 +160,26 @@ public class CassandraResultSet extends AbstractResultSet {
 		return currentRow.getFloat(columnLabel);
 	}
 
+	// XXX not used by hibernate
+	@Override
+	public float getFloat(final int columnIndex) throws SQLException {
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+		return currentRow.getFloat(columnIndex - 1);
+	}
+
 	@Override
 	public double getDouble(final String columnLabel) throws SQLException {
 		lastWasNull = currentRow.isNull(columnLabel);
 		return currentRow.getDouble(columnLabel);
 	}
+
+	// XXX not used by hibernate
+	@Override
+	public double getDouble(final int columnIndex) throws SQLException {
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+		return currentRow.getDouble(columnIndex - 1);
+	}
+
 
 	@Override
 	public java.sql.Timestamp getTimestamp(final String columnLabel) throws SQLException {
@@ -175,6 +218,13 @@ public class CassandraResultSet extends AbstractResultSet {
 		log("getObject(" + columnLabel + ")");
 		lastWasNull = currentRow.isNull(columnLabel);
 		return currentRow.getObject(columnLabel);
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public Object getObject(final int columnIndex) throws SQLException {
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+		return currentRow.getObject(columnIndex - 1);
 	}
 
 	@Override
@@ -216,6 +266,52 @@ public class CassandraResultSet extends AbstractResultSet {
 		return new SerialBlob(result);
 	}
 
+	// XXX not used by hibernate
+	@Override
+	public Blob getBlob(final int columnIndex) throws SQLException {
+
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+
+		if (lastWasNull)
+			return null;
+
+		final java.nio.ByteBuffer buffer = currentRow.getBytes(columnIndex - 1);
+
+		if (buffer == null) {
+			lastWasNull = true;
+			return null;
+		}
+
+		final byte[] result = new byte[buffer.remaining()];
+
+		buffer.get(result);
+
+		return new SerialBlob(result);
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public byte[] getBytes(final int columnIndex) throws SQLException {
+
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+
+		if (lastWasNull)
+			return null;
+
+		final java.nio.ByteBuffer buffer = currentRow.getBytes(columnIndex - 1);
+
+		if (buffer == null) {
+			lastWasNull = true;
+			return null;
+		}
+
+		final byte[] result = new byte[buffer.remaining()];
+
+		buffer.get(result);
+
+		return result;
+	}
+
 
 	@Override
 	public java.sql.Date getDate(final String columnLabel) throws SQLException {
@@ -228,6 +324,20 @@ public class CassandraResultSet extends AbstractResultSet {
 			new java.sql.Date(currentRow.getDate(columnLabel).getMillisSinceEpoch())
 		);
 	}
+
+	// XXX not used by hibernate
+	@Override
+	public java.sql.Date getDate(final int columnIndex) throws SQLException {
+
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+
+		return (
+			lastWasNull?
+			null:
+			new java.sql.Date(currentRow.getDate(columnIndex - 1).getMillisSinceEpoch())
+		);
+	}
+
 
 
 }

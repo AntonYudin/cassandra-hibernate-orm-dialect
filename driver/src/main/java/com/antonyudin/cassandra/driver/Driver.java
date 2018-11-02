@@ -164,6 +164,7 @@ public class Driver implements java.sql.Driver {
 		}
 
 		public int typeFromCassandraToSQL(final DataType type) {
+
 			if (type == DataType.ascii())
 				return Types.VARCHAR;
 			else if (type == DataType.varchar())
