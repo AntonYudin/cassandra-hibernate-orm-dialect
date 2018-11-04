@@ -36,6 +36,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DriverTest implements java.io.Serializable {
 
+	private final static java.util.logging.Logger logger = java.util.logging.Logger.getLogger(
+		Driver.class.getName()
+	);
+
 
 	@org.junit.jupiter.api.Test
 	public void testLoad() throws java.lang.Exception {
@@ -64,6 +68,24 @@ public class DriverTest implements java.io.Serializable {
 		final Driver driver = new Driver();
 
 		assertTrue(driver.acceptsURL("jdbc:cassandra://127.0.0.1/keyspace"));
+	}
+
+	@org.junit.jupiter.api.Test
+	@org.junit.jupiter.api.Tag("cassandra")
+	public void testDatabaseVersion() throws java.lang.Exception {
+
+		final java.sql.Connection connection = java.sql.DriverManager.getConnection(
+			"jdbc:cassandra://127.0.0.1/jee",
+			"jee",
+			"jee"
+		);
+
+		final java.sql.DatabaseMetaData metaData = connection.getMetaData();
+
+		logger.info("database major version: [" + metaData.getDatabaseMajorVersion() + "]");
+		logger.info("database minor version: [" + metaData.getDatabaseMinorVersion() + "]");
+
+		connection.close();
 	}
 
 }

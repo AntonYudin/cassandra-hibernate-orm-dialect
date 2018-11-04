@@ -27,8 +27,9 @@
 
 		<!--
 		<excluded.tests>mariadb, infinispan, cassandra, mongodb, postgresql</excluded.tests>
-		-->
 		<excluded.tests>mariadb, infinispan, mongodb, postgresql</excluded.tests>
+		-->
+		<excluded.tests>infinispan, mongodb</excluded.tests>
 	</properties>
 
 

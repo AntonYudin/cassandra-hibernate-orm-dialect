@@ -64,8 +64,8 @@
 			<!--
 			<property name="hibernate.hbm2ddl.auto" value="update"/>
 			-->
-			<property name="hibernate.show_sql" value="true"/>
-			<property name="hibernate.format_sql" value="true"/>
+			<property name="hibernate.show_sql" value="false"/>
+			<property name="hibernate.format_sql" value="false"/>
 			<!--
 			<property name="hibernate.default_schema" value="jee"/>
 			-->
@@ -194,6 +194,15 @@
 		<description>Test MariaDB JEE Application Persistence Unit</description>
 
 		<mapping-file>META-INF/orm-mariadb.xml</mapping-file>
+
+		<class>com.antonyudin.cassandra.model.users.UserBasic</class>
+		<class>com.antonyudin.cassandra.model.users.UserFull</class>
+		<class>com.antonyudin.cassandra.model.users.User</class>
+		<class>com.antonyudin.cassandra.model.users.PostBasic</class>
+		<class>com.antonyudin.cassandra.model.users.PostFull</class>
+		<class>com.antonyudin.cassandra.model.users.Post</class>
+		<class>com.antonyudin.cassandra.model.users.UserPostId</class>
+		<class>com.antonyudin.cassandra.model.users.UserPost</class>
 
 		<class>com.antonyudin.cassandra.model.Source</class>
 		<class>com.antonyudin.cassandra.model.SourceId</class>

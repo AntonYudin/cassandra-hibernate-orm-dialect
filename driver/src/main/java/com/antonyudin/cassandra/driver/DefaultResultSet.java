@@ -41,7 +41,7 @@ public class DefaultResultSet extends AbstractResultSet {
 
 	public DefaultResultSet(final String[] columnNames, final List<Object[]> rows) {
 
-		logger.info(
+		logger.info(()->
 			"DefaultResultSet(), rows.size: [" + (rows != null? rows.size(): null) +
 			"], logContent: [" + logContent + "]"
 		);
@@ -50,7 +50,7 @@ public class DefaultResultSet extends AbstractResultSet {
 
 		if (logContent) {
 			for (String columnName: columnNames) {
-				logger.info("\tcolumnName: [" + columnName + "]");
+				logger.info(()-> "\tcolumnName: [" + columnName + "]");
 			}
 		}
 

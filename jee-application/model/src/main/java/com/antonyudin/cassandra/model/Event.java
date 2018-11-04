@@ -294,6 +294,18 @@ public class Event implements Comparable<Event>, java.io.Serializable {
 	}
 
 
+	/*
+	private int intValue = 2;
+
+	@Column
+	public int getIntValue() {
+		return intValue;
+	}
+
+	public void setIntValue(final int value) {
+		intValue = value;
+	}
+	*/
 
 
 

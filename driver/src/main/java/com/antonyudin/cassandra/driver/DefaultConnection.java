@@ -221,7 +221,7 @@ public class DefaultConnection extends AbstractConnection {
 
 		@Override
 		protected List<String> serialize(final String value) {
-			logger.info("serialize(" + value + ")");
+			logger.info(()-> "serialize(" + value + ")");
 			throw new IllegalArgumentException("not implemented");
 		}
 
@@ -242,11 +242,11 @@ public class DefaultConnection extends AbstractConnection {
 		final Cluster.Builder builder = Cluster.builder();
 
 		for (String contactPoint: connectionString.getContactPoints()) {
-			logger.info("adding contact point [" + contactPoint + "]");
+			logger.info(()-> "adding contact point [" + contactPoint + "]");
 			builder.addContactPoint(contactPoint);
 		}
 
-		logger.info("contact points: [" + builder.getContactPoints() + "]");
+		logger.info(()-> "contact points: [" + builder.getContactPoints() + "]");
 
 		cluster = builder.build();
 		cluster.getConfiguration().getCodecRegistry().register(new UUIDAsStringCodec());
@@ -259,7 +259,7 @@ public class DefaultConnection extends AbstractConnection {
 
 		final String keyspaceNameFromConnectionString = connectionString.getKeyspace();
 
-		logger.info("keyspace name from connection string: [" + keyspaceNameFromConnectionString + "]");
+		logger.info(()-> "keyspace name from connection string: [" + keyspaceNameFromConnectionString + "]");
 
 		if ((keyspaceNameFromConnectionString != null) && (keyspaceNameFromConnectionString.length() > 0))
 			keyspaceName = keyspaceNameFromConnectionString;
@@ -267,10 +267,10 @@ public class DefaultConnection extends AbstractConnection {
 			keyspaceName = null;
 
 		if ((keyspaceName != null) && (keyspaceName.length() > 0)) {
-			logger.info("connecting to keyspace: [" + keyspaceName + "]");
+			logger.info(()-> "connecting to keyspace: [" + keyspaceName + "]");
 			session = cluster.connect(keyspaceName);
 		} else {
-			logger.info("connecting to cluster without a specific keyspace ...");
+			logger.info(()-> "connecting to cluster without a specific keyspace ...");
 			session = cluster.connect();
 		}
 

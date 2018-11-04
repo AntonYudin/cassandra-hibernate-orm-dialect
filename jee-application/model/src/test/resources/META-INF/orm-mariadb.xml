@@ -7,10 +7,7 @@
 	version="2.1"
 >
 
-	<package>com.antonyudin.cassandra.model</package>
-
-
-	<embeddable class="EventId">
+	<embeddable class="com.antonyudin.cassandra.model.EventId">
 
 		<attributes>
 
@@ -39,7 +36,7 @@
 	</embeddable>
 
 
-	<embeddable class="SourceId">
+	<embeddable class="com.antonyudin.cassandra.model.SourceId">
 		<attributes>
 			<basic name="identity">
 				<!--
@@ -51,7 +48,7 @@
 	</embeddable>
 
 
-	<embeddable class="ContainerId">
+	<embeddable class="com.antonyudin.cassandra.model.ContainerId">
 		<attributes>
 			<basic name="identity">
 			<!--
@@ -63,7 +60,7 @@
 	</embeddable>
 
 	<entity
-		class="Event"
+		class="com.antonyudin.cassandra.model.Event"
 	>
 		<attributes>
 			<element-collection name="listOfNames" target-class="java.lang.String">
@@ -79,7 +76,7 @@
 	</entity>
 
 	<entity
-		class="EventChild"
+		class="com.antonyudin.cassandra.model.EventChild"
 	>
 		<!--
 		<association-override name="event">
@@ -93,6 +90,41 @@
 		</association-override>
 		-->
 	</entity>
+
+	<entity class="com.antonyudin.cassandra.model.users.User">
+		<attributes>
+			<id name="identity">
+				<column column-definition="BINARY(16)"/>
+			</id>
+		</attributes>
+	</entity>
+
+	<mapped-superclass class="com.antonyudin.cassandra.model.users.PostFull">
+		<attributes>
+			<basic name="authorIdentity">
+				<column name="author_identity" column-definition="BINARY(16)"/>
+			</basic>
+		</attributes>
+	</mapped-superclass>
+
+	<entity class="com.antonyudin.cassandra.model.users.Post">
+		<attributes>
+			<id name="identity">
+				<column column-definition="BINARY(16)"/>
+			</id>
+		</attributes>
+	</entity>
+
+	<embeddable class="com.antonyudin.cassandra.model.users.UserPostId">
+		<attributes>
+			<basic name="userIdentity">
+				<column name="user_identity" column-definition="BINARY(16)"/>
+			</basic>
+			<basic name="postIdentity">
+				<column name="post_identity" column-definition="BINARY(16)"/>
+			</basic>
+		</attributes>
+	</embeddable>
 
 
 </entity-mappings>

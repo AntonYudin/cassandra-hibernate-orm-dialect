@@ -71,12 +71,12 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 	@Override
 	public String getDatabaseProductName() throws SQLException {
-		return "cassandra";
+		return getSessionInformation().getDatabaseProductName();
 	}
 
 	@Override
 	public String getDatabaseProductVersion() throws SQLException {
-		return "unknown";
+		return getSessionInformation().getDatabaseProductVersion();
 	}
 
 	@Override
@@ -99,24 +99,30 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 		return 0;
 	}
 
+	private SessionInformation sessionInformation;
+
+	protected SessionInformation getSessionInformation() {
+		if (sessionInformation == null)
+			sessionInformation = new SessionInformation(session);
+		return sessionInformation;
+	}
+
 	@Override
 	public int getDatabaseMajorVersion() throws SQLException {
-		// XXX fake
-		return 1;
+		return getSessionInformation().getDatabaseMajorVersion();
 	}
 
 	@Override
 	public int getDatabaseMinorVersion() throws SQLException {
-		// XXX fake
-		return 0;
+		return getSessionInformation().getDatabaseMinorVersion();
 	}
 
 
-	protected String getEffectiveKeyspaceName(final String schemaPattern) {
+	protected String getEffectiveKeyspaceName(final String schema) {
 		final String result = (
-			keyspaceName != null?
-			keyspaceName:
-			schemaPattern
+			schema != null?
+			schema:
+			keyspaceName
 		);
 
 		return result;
@@ -143,7 +149,9 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 		final String effectiveKeyspaceName = getEffectiveKeyspaceName(schemaPattern);
 
-		final KeyspaceMetadata keyspaceMetadata = cluster.getMetadata().getKeyspace(effectiveKeyspaceName);
+		final KeyspaceMetadata keyspaceMetadata = cluster.getMetadata().getKeyspace(
+			effectiveKeyspaceName
+		);
 
 		final Collection<TableMetadata> tablesMetadata = keyspaceMetadata.getTables();
 
@@ -377,7 +385,9 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 		final String effectiveKeyspaceName = getEffectiveKeyspaceName(schema);
 
-		final KeyspaceMetadata keyspaceMetadata = cluster.getMetadata().getKeyspace(effectiveKeyspaceName);
+		final KeyspaceMetadata keyspaceMetadata = cluster.getMetadata().getKeyspace(
+			effectiveKeyspaceName
+		);
 
 		final Collection<TableMetadata> tablesMetadata = keyspaceMetadata.getTables();
 
@@ -708,7 +718,30 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 		final List<Object[]> list = new ArrayList<>();
 
-		list.add(new Object[] {keyspaceName, null});
+
+		final com.datastax.driver.core.ResultSet resultSet = session.execute(
+			"select keyspace_name from system_schema.keyspaces"
+		);
+
+
+		final java.util.Iterator<com.datastax.driver.core.Row> iterator =
+			resultSet.iterator()
+		;
+
+		while (iterator.hasNext()) {
+
+			final String name = iterator.next().getString(0);
+
+			list.add(new Object[] {name, null});
+		}
+
+		/*
+		list.add(new Object[] {"system", null});
+		list.add(new Object[] {"system_auth", null});
+		list.add(new Object[] {"system_distributed", null});
+		list.add(new Object[] {"system_schema", null});
+		list.add(new Object[] {"system_traces", null});
+		*/
 
 		final String[] names = {
 			"TABLE_SCHEM",
@@ -812,6 +845,76 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 		};
 
 		return new DefaultResultSet(names, list);
+	}
+
+
+	public static class SessionInformation implements java.io.Serializable {
+
+		public SessionInformation(final Session session) {
+
+			try {
+				final com.datastax.driver.core.ResultSet resultSet = session.execute(
+					"select release_version from system.local"
+				);
+
+				final com.datastax.driver.core.Row row = resultSet.iterator().next();
+
+				int databaseMajorVersion = -1;
+				int databaseMinorVersion = -1;
+
+				String version = null;
+
+				if (row != null) {
+
+					version = row.getString(0);
+
+					if (version != null) {
+
+						final String[] parts = version.split("\\.");
+
+						if (parts.length > 0)
+							databaseMajorVersion = Integer.valueOf(parts[0]);
+
+						if (parts.length > 1)
+							databaseMinorVersion = Integer.valueOf(parts[1]);
+					}
+				}
+
+				this.databaseMajorVersion = databaseMajorVersion;
+				this.databaseMinorVersion = databaseMinorVersion;
+				this.databaseProductVersion = version;
+				this.databaseProductName = "Cassandra";
+
+			} catch (java.lang.Exception exception) {
+				logger.log(java.util.logging.Level.SEVERE, "exception", exception);
+				throw exception;
+			}
+		}
+
+
+		private final int databaseMajorVersion;
+
+		public int getDatabaseMajorVersion() throws SQLException {
+			return databaseMajorVersion;
+		}
+
+		public final int databaseMinorVersion;
+
+		public int getDatabaseMinorVersion() throws SQLException {
+			return databaseMinorVersion;
+		}
+
+		private final String databaseProductName;
+
+		public String getDatabaseProductName() {
+			return databaseProductName;
+		}
+
+		private final String databaseProductVersion;
+
+		public String getDatabaseProductVersion() {
+			return databaseProductVersion;
+		}
 	}
 
 }
