@@ -427,7 +427,14 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 
 	@Override
 	public int getMaxRows() throws SQLException {
-		return 0; // unlimited
+		return getBoundStatement().getFetchSize();
+	//	return 0; // unlimited
+	}
+
+	@Override
+	public void setMaxRows(final int value) throws SQLException {
+		logger.info("setMaxRows(" + value + ")");
+		getBoundStatement().setFetchSize(value);
 	}
 
 	@Override

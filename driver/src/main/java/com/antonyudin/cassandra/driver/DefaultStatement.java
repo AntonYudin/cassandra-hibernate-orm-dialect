@@ -30,6 +30,8 @@ import java.sql.SQLWarning;
 import java.sql.ResultSet;
 
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.SimpleStatement;
 
 
 public class DefaultStatement extends AbstractStatement {
@@ -74,6 +76,7 @@ public class DefaultStatement extends AbstractStatement {
 
 	private	com.datastax.driver.core.ResultSet resultSet = null;
 
+
 	@Override
 	public boolean execute(final String sql) throws SQLException {
 
@@ -81,9 +84,12 @@ public class DefaultStatement extends AbstractStatement {
 
 		if (transformedSQL.length() > 0) {
 
-			resultSet = session.execute(
-				transformSQL(sql)
-			);
+			final Statement statement = new SimpleStatement(transformedSQL);
+
+			if (getMaxRows() > 0)
+				statement.setFetchSize(getMaxRows());
+
+			resultSet = session.execute(statement);
 
 			warnings.add(resultSet);
 		}
@@ -91,8 +97,9 @@ public class DefaultStatement extends AbstractStatement {
 		return true;
 	}
 
+
 	protected String transformSQL(final String originalSQL) {
-		return (new SQLTransformer()).transform(originalSQL);
+		return connection.getTransformer().transform(originalSQL);
 	}
 
 	@Override
@@ -101,11 +108,19 @@ public class DefaultStatement extends AbstractStatement {
 	}
 
 
+	private int maxRows = 0;
+
 	// XXX not used by hibernate
 	@Override
 	public void setMaxRows(final int max) throws SQLException {
-		logger.warning("setMaxRows() not implemented");
+		maxRows = max;
 	}
+
+	@Override
+	public int getMaxRows() throws SQLException {
+		return maxRows;
+	}
+
 
 
 	// XXX not used by hibernate

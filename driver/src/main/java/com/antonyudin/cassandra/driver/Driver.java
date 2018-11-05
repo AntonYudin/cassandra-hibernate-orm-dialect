@@ -113,6 +113,13 @@ public class Driver implements java.sql.Driver {
 	}
 
 
+	protected Connection newDefaultConnection(
+		final Context context, final ConnectionString connectionString
+	) throws java.lang.Exception {
+		return new DefaultConnection(context, connectionString);
+	}
+
+
 	@Override
 	public Connection connect(final String url, final Properties info) throws SQLException {
 		logger.info("connect(" + url + ", " + info + ")");
@@ -120,7 +127,7 @@ public class Driver implements java.sql.Driver {
 		try {
 			final ConnectionString connectionString = getConnectionString(url);
 
-			return new DefaultConnection(context, connectionString);
+			return newDefaultConnection(context, connectionString);
 
 		} catch (java.lang.Exception exception) {
 			logger.warning("exception: " + exception);

@@ -667,7 +667,29 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 	}
 
 	@Override
+	public boolean supportsCatalogsInProcedureCalls() throws SQLException {
+		return false;
+	}
+
+	@Override
+	public boolean supportsSavepoints() throws SQLException {
+		return false;
+	}
+
+	@Override
 	public boolean supportsSchemasInTableDefinitions() throws SQLException {
+		return false;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public boolean supportsSchemasInDataManipulation() throws SQLException {
+		return false;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public boolean supportsCatalogsInDataManipulation() throws SQLException {
 		return false;
 	}
 
@@ -698,11 +720,54 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 	// XXX not used by hibernate
 	@Override
+	public String getIdentifierQuoteString() throws SQLException {
+		return "\"";
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public String getCatalogTerm() throws SQLException {
+		return "catalog";
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public String getSchemaTerm() throws SQLException {
+		return "keyspace";
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public String getProcedureTerm() throws SQLException {
+		return "procedure";
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public String getNumericFunctions() throws SQLException {
+		return "";
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public String getStringFunctions() throws SQLException {
+		return "";
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public String getTimeDateFunctions() throws SQLException {
+		return "";
+	}
+
+	// XXX not used by hibernate
+	@Override
 	public ResultSet getCatalogs() throws SQLException {
 
 		final List<Object[]> list = new ArrayList<>();
 
-		list.add(new Object[0]);
+		//list.add(new Object[0]);
+		list.add(new Object[] {null});
 
 		final String[] names = {
 			"TABLE_CAT"
@@ -915,6 +980,37 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 		public String getDatabaseProductVersion() {
 			return databaseProductVersion;
 		}
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public int getDefaultTransactionIsolation() throws SQLException {
+		return Connection.TRANSACTION_NONE;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public boolean isReadOnly() throws SQLException {
+		return false;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public boolean supportsDataDefinitionAndDataManipulationTransactions() throws SQLException {
+		return false;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public boolean autoCommitFailureClosesAllResultSets() throws SQLException {
+		return false;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public boolean supportsStoredFunctionsUsingCallSyntax() throws SQLException {
+		return false;
 	}
 
 }

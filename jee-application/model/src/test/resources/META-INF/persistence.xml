@@ -47,7 +47,7 @@
 <!--
 			<property name="javax.persistence.jdbc.url" value="jdbc:cassandra://localhost/jee?tracing=true"/>
 -->
-			<property name="javax.persistence.jdbc.url" value="jdbc:cassandra://localhost/jee"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:cassandra://localhost/jee?transformer=com.antonyudin.cassandra.hibernate.dialect.HibernateSQLTransformer"/>
 			<!--
 			<property name="javax.persistence.jdbc.url" value="jdbc:cassandra://10.5.2.221/jee"/>
 			-->

@@ -14,7 +14,7 @@
 
 	<parent>
 		<groupId>com.antonyudin.cassandra</groupId>
-		<artifactId>jee-application</artifactId>
+		<artifactId>ay-jee-application</artifactId>
 		<version>1.0</version>
 	</parent>
 
@@ -34,7 +34,7 @@
 
 		<dependency>
 			<groupId>com.antonyudin.cassandra</groupId>
-			<artifactId>hibernate-cassandra-dialect</artifactId>
+			<artifactId>ay-hibernate-cassandra-dialect</artifactId>
 			<version>1.0</version>
 			<type>jar</type>
 			<scope>test</scope>
@@ -42,7 +42,7 @@
 
 		<dependency>
 			<groupId>com.antonyudin.cassandra</groupId>
-			<artifactId>hibernate-mariadb-dialect</artifactId>
+			<artifactId>ay-hibernate-mariadb-dialect</artifactId>
 			<version>1.0</version>
 			<type>jar</type>
 			<scope>test</scope>
@@ -50,7 +50,7 @@
 
 		<dependency>
 			<groupId>com.antonyudin.cassandra</groupId>
-			<artifactId>hibernate-postgresql-dialect</artifactId>
+			<artifactId>ay-hibernate-postgresql-dialect</artifactId>
 			<version>1.0</version>
 			<type>jar</type>
 			<scope>test</scope>
@@ -58,7 +58,7 @@
 
 		<dependency>
 			<groupId>com.antonyudin.cassandra</groupId>
-			<artifactId>driver</artifactId>
+			<artifactId>ay-cassandra-jdbc-driver</artifactId>
 			<version>1.0</version>
 			<type>jar</type>
 			<scope>test</scope>

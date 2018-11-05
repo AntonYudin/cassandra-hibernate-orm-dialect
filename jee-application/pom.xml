@@ -8,8 +8,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.antonyudin.cassandra</groupId>
+	<artifactId>ay-jee-application</artifactId>
 	<version>1.0</version>
-	<artifactId>jee-application</artifactId>
 	<packaging>pom</packaging>
 
 	<parent>

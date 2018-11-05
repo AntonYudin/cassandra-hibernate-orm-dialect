@@ -93,8 +93,21 @@ public class CassandraResultSet extends AbstractResultSet {
 	// XXX not used by hibernate
 	@Override
 	public String getString(final int columnIndex) throws SQLException {
+
 		lastWasNull = currentRow.isNull(columnIndex - 1);
-		return currentRow.getString(columnIndex - 1);
+
+		try {
+
+			return currentRow.getString(columnIndex - 1);
+
+		} catch (java.lang.Exception exception) {
+
+	//		logger.log(java.util.logging.Level.SEVERE, "exception", exception);
+
+			final Object result = currentRow.getObject(columnIndex - 1);
+
+			return (result != null? result.toString(): null);
+		}
 	}
 
 	@Override
@@ -151,7 +164,22 @@ public class CassandraResultSet extends AbstractResultSet {
 	@Override
 	public long getLong(final int columnIndex) throws SQLException {
 		lastWasNull = currentRow.isNull(columnIndex - 1);
-		return currentRow.getLong(columnIndex - 1);
+		// XXX
+		// JDBC allows a short or an int field to be fetched using getLong().
+		// This code attempts to avoid checking column definitions if the getLong() method is
+		// called for a long SQL type.
+		// In other cases catch attempts to convert the value to short and int.
+		// Hibernate always calls a proper getter/setter for a SQL type, but
+		// some other tools sometimes call getLong() for ints or shorts.
+		try {
+			return currentRow.getLong(columnIndex - 1);
+		} catch (com.datastax.driver.core.exceptions.CodecNotFoundException e0) {
+			try {
+				return currentRow.getInt(columnIndex - 1);
+			} catch (com.datastax.driver.core.exceptions.CodecNotFoundException e1) {
+				return currentRow.getShort(columnIndex - 1);
+			}
+		}
 	}
 
 	@Override

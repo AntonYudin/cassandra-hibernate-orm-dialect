@@ -76,10 +76,8 @@ public class PreparedStatementsCache implements java.io.Serializable {
 		cache.clear();
 	}
 
-	private final SQLTransformer transformer = new SQLTransformer();
-
 	protected String transformSQL(final String originalSQL) {
-		return transformer.transform(originalSQL);
+		return connection.getTransformer().transform(originalSQL);
 	}
 
 }

@@ -198,6 +198,34 @@ public class DefaultResultSet extends AbstractResultSet {
 
 
 	@Override
+	public long getLong(final String columnLabel) throws SQLException {
+
+		final Number result = (Number) getCurrentRow()[getColumnIndexByColumnName(columnLabel)];
+
+		wasNullFlag = (result == null);
+
+		if (result == null)
+			return -1;
+
+		return result.longValue();
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public long getLong(final int columnIndex) throws SQLException {
+
+		final Number result = (Number) getCurrentRow()[columnIndex - 1];
+
+		wasNullFlag = (result == null);
+
+		if (result == null)
+			return -1;
+
+		return result.longValue();
+	}
+
+
+	@Override
 	public ResultSetMetaData getMetaData() throws SQLException {
 		return new DefaultResultSetMetaData(
 			columnNames

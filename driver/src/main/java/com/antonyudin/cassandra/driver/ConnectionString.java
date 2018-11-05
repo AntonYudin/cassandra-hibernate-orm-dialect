@@ -39,6 +39,7 @@ public class ConnectionString implements java.io.Serializable {
 
 
 	private final String parameters_tracing = "tracing";
+	private final String parameters_transformer = "transformer";
 
 
 	public ConnectionString(final String url) throws java.net.URISyntaxException {
@@ -83,6 +84,8 @@ public class ConnectionString implements java.io.Serializable {
 			(parameters.get(parameters_tracing).equals("true"))
 		)
 			tracingEnabled = true;
+
+		transformer = parameters.get(parameters_transformer);
 	}
 
 
@@ -107,6 +110,13 @@ public class ConnectionString implements java.io.Serializable {
 	}
 
 
+	private String transformer = null;
+
+	public String getTransformer() {
+		return transformer;
+	}
+
+
 	protected Map<String, String> parseParameters(final String query) {
 
 		final Map<String, String> result = new HashMap<>();
@@ -117,6 +127,9 @@ public class ConnectionString implements java.io.Serializable {
 		for (int position = 0;;) {
 
 			final int index = query.indexOf("&", position);
+
+			logger.info("position: " + position + "]");
+			logger.info("index: " + index + "]");
 
 			final String pair = query.substring(
 				position,
@@ -138,6 +151,8 @@ public class ConnectionString implements java.io.Serializable {
 
 			if (index < 0)
 				break;
+
+			position = index + 1;
 		}
 
 		return result;

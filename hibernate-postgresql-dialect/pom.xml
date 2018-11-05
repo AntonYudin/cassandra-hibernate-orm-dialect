@@ -7,7 +7,7 @@
 >
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>hibernate-postgresql-dialect</artifactId>
+	<artifactId>ay-hibernate-postgresql-dialect</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0</version>
 

@@ -7,7 +7,7 @@
 >
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>driver</artifactId>
+	<artifactId>ay-cassandra-jdbc-driver</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0</version>
 
@@ -48,7 +48,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.0.1</version>
+				<version>${maven.source.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -60,12 +60,14 @@
 				</executions>
 			</plugin>
 
+			<!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.1</version>
+				<version>${maven.javadoc.plugin.version}</version>
 				<configuration>
 					<failOnWarnings>true</failOnWarnings>
+					<additionalOptions>${maven.javadoc.plugin.html.version}</additionalOptions>
 				</configuration>
 				<executions>
 					<execution>
@@ -76,6 +78,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>

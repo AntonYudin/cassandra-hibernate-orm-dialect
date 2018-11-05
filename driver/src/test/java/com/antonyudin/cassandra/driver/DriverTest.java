@@ -67,7 +67,11 @@ public class DriverTest implements java.io.Serializable {
 
 		final Driver driver = new Driver();
 
-		assertTrue(driver.acceptsURL("jdbc:cassandra://127.0.0.1/keyspace"));
+		assertTrue(
+			driver.acceptsURL(
+				"jdbc:cassandra://127.0.0.1/keyspace"
+			)
+		);
 	}
 
 	@org.junit.jupiter.api.Test
@@ -75,7 +79,8 @@ public class DriverTest implements java.io.Serializable {
 	public void testDatabaseVersion() throws java.lang.Exception {
 
 		final java.sql.Connection connection = java.sql.DriverManager.getConnection(
-			"jdbc:cassandra://127.0.0.1/jee",
+			"jdbc:cassandra://127.0.0.1/jee?" +
+			"transformer=com.antonyudin.cassandra.driver.TestSQLTransformer",
 			"jee",
 			"jee"
 		);

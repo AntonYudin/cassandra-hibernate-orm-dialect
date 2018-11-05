@@ -320,6 +320,14 @@ public class CassandraDialect extends Dialect {
 		return super.getQueryHintString(query, hints);
 	}
 
+	/*
+	@Override
+	public String transformSelectString(final String select) {
+		logger.info("transformSelectString(" + select + ")");
+		return select;
+	}
+	*/
+
 }
 
 

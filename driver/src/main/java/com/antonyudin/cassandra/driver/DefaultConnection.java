@@ -231,13 +231,28 @@ public class DefaultConnection extends AbstractConnection {
 		}
 	}
 
+	private final SQLTransformer transformer;
 
 
-	DefaultConnection(final Driver.Context driverContext, final ConnectionString connectionString) {
+	SQLTransformer getTransformer() {
+		return transformer;
+	}
+
+
+	DefaultConnection(final Driver.Context driverContext, final ConnectionString connectionString) throws java.lang.Exception {
 
 		this.driverContext = driverContext;
 		this.connectionString = connectionString;
 		this.context = new Context(connectionString.isTracingEnabled());
+
+		if (connectionString.getTransformer() != null) {
+			this.transformer = (SQLTransformer) (
+				Class.forName(
+					connectionString.getTransformer()
+				).getDeclaredConstructor().newInstance()
+			);
+		} else
+			this.transformer = ((sql)-> sql);
 
 		final Cluster.Builder builder = Cluster.builder();
 
@@ -440,6 +455,13 @@ public class DefaultConnection extends AbstractConnection {
 		public boolean isTracingEnabled() {
 			return tracingEnabled;
 		}
+	}
+
+
+	@Override
+	public boolean isValid(final int timeout) throws SQLException {
+		// XXX should execute a simple query to check that the connection is still valid.
+		return (!session.isClosed());
 	}
 
 }

@@ -50,13 +50,15 @@ public class ConnectionStringTest implements java.io.Serializable {
 
 		final ConnectionString connectionString = new ConnectionString(
 			prefix + scheme + "://" + contactPoint + ":" + port + "/" + keyspace + "?" +
-			"tracing=" + tracingEnabled
+			"tracing=" + tracingEnabled + "&" +
+			"transformer=" + "hibernate"
 		);
 
 		assertTrue(connectionString.getContactPoints().contains(contactPoint));
 	//	assertEquals(connectionString.getPort(), port);
 		assertEquals(connectionString.getKeyspace(), keyspace);
 		assertEquals(connectionString.isTracingEnabled(), tracingEnabled);
+		assertEquals(connectionString.getTransformer(), "hibernate");
 	}
 
 }

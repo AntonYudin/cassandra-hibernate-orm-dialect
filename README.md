@@ -1,6 +1,12 @@
 # cassandra-hibernate-orm-dialect
 Hibernate ORM Cassandra Dialect and JDBC Driver
 
+The JDBC Driver is designed specifically for the hibernate integration, yet still can be used with the following tools:
+* [DbVisualizer](https://www.dbvis.com)
+* [DBeaver](https://dbeaver.io)
+
+## Contents
+
 * [Description](README.md#description)
 * [Supported Versions](README.md#supported-versions)
 * [Reasons](README.md#reasons)

@@ -14,7 +14,17 @@
 	<artifactId>project</artifactId>
 	<packaging>pom</packaging>
 
-	<name>cassandra-jdbc-driver</name>
+	<name>cassandra-jdbc-driver-and-hibernate-dialect</name>
+	<description>Hibernate ORM Cassandra Dialect and JDBC Driver</description>
+	<url>https://github.com/AntonYudin/cassandra-hibernate-orm-dialect</url>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 
 	<properties>
@@ -23,13 +33,16 @@
 		<maven.jar.plugin.version>3.1.0</maven.jar.plugin.version>
 		<maven.ear.plugin.version>3.0.1</maven.ear.plugin.version>
 		<maven.ejb.plugin.version>3.0.1</maven.ejb.plugin.version>
+		<maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+		<maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
+		<maven.javadoc.plugin.html.version>-html5</maven.javadoc.plugin.html.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!--
 		<excluded.tests>mariadb, infinispan, cassandra, mongodb, postgresql</excluded.tests>
-		<excluded.tests>mariadb, infinispan, mongodb, postgresql</excluded.tests>
-		-->
 		<excluded.tests>infinispan, mongodb</excluded.tests>
+		-->
+		<excluded.tests>mariadb, infinispan, mongodb, postgresql</excluded.tests>
 	</properties>
 
 
@@ -157,6 +170,10 @@
 		</pluginManagement>
 	</build>
 
+	<scm>
+		<url>https://github.com/AntonYudin/cassandra-hibernate-orm-dialect</url>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -171,11 +188,6 @@
 			<version>5.3.1</version>
 			<scope>test</scope>
 		</dependency>
-<dependency>
-    <groupId>com.codahale.metrics</groupId>
-    <artifactId>metrics-core</artifactId>
-    <version>3.0.2</version>
-</dependency>
 
 	</dependencies>
 
@@ -250,6 +262,14 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.1.0</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.codahale.metrics</groupId>
+				<artifactId>metrics-core</artifactId>
+				<version>3.0.2</version>
+			</dependency>
+
+
 
 <!--
 			<dependency>
