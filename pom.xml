@@ -152,8 +152,8 @@
 						<compilerArgument>-Xlint:all</compilerArgument>
 					</configuration>
 				</plugin>
-
 			</plugins>
+
 		</pluginManagement>
 	</build>
 
