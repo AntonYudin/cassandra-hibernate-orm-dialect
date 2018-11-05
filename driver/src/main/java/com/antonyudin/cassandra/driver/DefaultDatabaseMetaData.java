@@ -131,20 +131,20 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 	@Override
 	public ResultSet getTables(
-		String catalog,
-		String schemaPattern,
-		String tableNamePattern,
-		String types[]
+		final String catalog,
+		final String schemaPattern,
+		final String tableNamePattern,
+		final String types[]
 	) throws SQLException {
 
-		logger.finest("getTables()");
-		logger.finest("\ncatalog: [" + catalog + "]");
-		logger.finest("\nschemaPattern: [" + schemaPattern + "]");
-		logger.finest("\ntableNamePattern: [" + tableNamePattern + "]");
+		logger.info("getTables()");
+		logger.info("\ncatalog: [" + catalog + "]");
+		logger.info("\nschemaPattern: [" + schemaPattern + "]");
+		logger.info("\ntableNamePattern: [" + tableNamePattern + "]");
 
 		if (types != null) {
 			for (String type: types)
-				logger.info("\nfinest: [" + type + "]");
+				logger.info("\ntype: [" + type + "]");
 		}
 
 		final String effectiveKeyspaceName = getEffectiveKeyspaceName(schemaPattern);
@@ -1012,6 +1012,35 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 	public boolean supportsStoredFunctionsUsingCallSyntax() throws SQLException {
 		return false;
 	}
+
+	// XXX not used by hibernate
+	@Override
+	public boolean supportsStoredProcedures() throws SQLException {
+		return false;
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public ResultSet getSuperTables(
+		final String catalog,
+		final String schemaPattern,
+		final String tableNamePattern
+	) throws SQLException {
+
+		final List<Object[]> list = new ArrayList<>();
+
+//		list.add(new Object[0]);
+
+		final String[] names = {
+			"TABLE_CAT",
+			"TABLE_SCHEM",
+			"TABLE_NAME",
+			"SUPERTABLE_NAME"
+		};
+
+		return new DefaultResultSet(names, list);
+	}
+
 
 }
 

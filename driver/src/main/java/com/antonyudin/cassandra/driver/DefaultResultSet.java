@@ -36,7 +36,7 @@ public class DefaultResultSet extends AbstractResultSet {
 		DefaultResultSet.class.getName()
 	);
 
-	private boolean logContent = false;
+	private boolean logContent = true;
 
 
 	public DefaultResultSet(final String[] columnNames, final List<Object[]> rows) {
@@ -113,11 +113,18 @@ public class DefaultResultSet extends AbstractResultSet {
 	// XXX not used by hibernate
 	@Override
 	public String getString(final int columnIndex) throws SQLException {
+
 		final Object value = getCurrentRow()[columnIndex - 1];
 
 		wasNullFlag = (value == null);
 
 		return (value != null? value.toString(): null);
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public Object getObject(final int columnIndex) throws SQLException {
+		return getCurrentRow()[columnIndex - 1];
 	}
 
 
