@@ -1,0 +1,5 @@
+
+DROP DATABASE jee;
+
+CREATE DATABASE jee WITH ENCODING = 'utf-8';
+
