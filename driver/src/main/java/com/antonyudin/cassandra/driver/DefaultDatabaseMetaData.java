@@ -159,7 +159,7 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 		for (TableMetadata tableMetadata: tablesMetadata) {
 
-			final String tableCatalog = null;
+			final String tableCatalog = getClusterName();
 			final String tableSchema = (
 				keyspaceName != null? keyspaceName: effectiveKeyspaceName
 			);
@@ -261,7 +261,7 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 			for (ColumnMetadata columnMetadata: tableMetadata.getColumns()) {
 
-				final String tableCatalog = null;
+				final String tableCatalog = getClusterName();
 
 				final String tableSchema = (
 					keyspaceName != null? keyspaceName: effectiveKeyspaceName
@@ -398,7 +398,7 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 			if ((table != null) && (!table.equals(tableMetadata.getName())))
 				continue;
 
-			final String tableCatalog = null;
+			final String tableCatalog = getClusterName();
 			final String tableSchema = (keyspaceName != null? null: effectiveKeyspaceName);
 			final String tableName = tableMetadata.getName();
 
@@ -760,6 +760,38 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 		return "";
 	}
 
+	private String clusterName = null;
+
+	protected String getClusterName() {
+
+		if (clusterName == null) {
+
+			final com.datastax.driver.core.ResultSet resultSet = session.execute(
+				"select cluster_name, data_center from system.local"
+			);
+
+
+			final java.util.Iterator<com.datastax.driver.core.Row> iterator =
+				resultSet.iterator()
+			;
+
+			while (iterator.hasNext()) {
+
+				final com.datastax.driver.core.Row row = iterator.next();
+
+				final String clusterNameColumn = row.getString(0);
+				final String dataCenterColumn = row.getString(1);
+
+				clusterName = clusterNameColumn + "/" + dataCenterColumn;
+
+				break;
+			}
+		}
+
+		return (clusterName != null? clusterName: cluster.getClusterName());
+	}
+
+
 	// XXX not used by hibernate
 	@Override
 	public ResultSet getCatalogs() throws SQLException {
@@ -767,7 +799,7 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 		final List<Object[]> list = new ArrayList<>();
 
 		//list.add(new Object[0]);
-		list.add(new Object[] {null});
+		list.add(new Object[] {getClusterName()});
 
 		final String[] names = {
 			"TABLE_CAT"
@@ -797,7 +829,7 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 			final String name = iterator.next().getString(0);
 
-			list.add(new Object[] {name, null});
+			list.add(new Object[] {name, getClusterName()});
 		}
 
 		/*
@@ -872,7 +904,7 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 			for (ColumnMetadata columnMetadata: tableMetadata.getPrimaryKey()) {
 
-				final String tableCatalog = null;
+				final String tableCatalog = getClusterName();
 
 				final String tableSchema = (
 					keyspaceName != null? keyspaceName: effectiveKeyspaceName
@@ -1040,6 +1072,102 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 		return new DefaultResultSet(names, list);
 	}
+
+	// XXX not used by hibernate
+	@Override
+	public ResultSet getProcedures(
+		final String catalog,
+		final String schemaPattern,
+		final String procedureNamePattern
+	) throws SQLException {
+
+		final List<Object[]> list = new ArrayList<>();
+
+//		list.add(new Object[0]);
+
+		final String[] names = {
+			"PROCEDURE_CAT",
+			"PROCEDURE_SCHEM",
+			"PROCEDURE_NAME",
+			"",
+			"",
+			"",
+			"REMARKS",
+			"PROCEDURE_TYPE",
+			"SPECIFIC_NAME"
+		};
+
+		return new DefaultResultSet(names, list);
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public ResultSet getUDTs(
+		final String catalog,
+		final String schemaPattern,
+		final String typeNamePattern,
+		final int[] types
+	) throws SQLException {
+
+		final List<Object[]> list = new ArrayList<>();
+
+//		list.add(new Object[0]);
+
+		final String[] names = {
+			"TYPE_CAT",
+			"TYPE_SCHEM",
+			"TYPE_NAME",
+			"CLASS_NAME",
+			"DATA_TYPE",
+			"REMARKS",
+			"BASE_TYPE"
+		};
+
+		return new DefaultResultSet(names, list);
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public String getURL() throws SQLException {
+		return connection.getConnectionString().getURL();
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public boolean allProceduresAreCallable() throws SQLException {
+		return true;
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public boolean allTablesAreSelectable() throws SQLException {
+		return true;
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public boolean supportsColumnAliasing() throws SQLException {
+		return true;
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public boolean supportsTableCorrelationNames() throws SQLException {
+		return false;
+	}
+
+
+	// XXX not used by hibernate
+	@Override
+	public boolean supportsDifferentTableCorrelationNames() throws SQLException {
+		return false;
+	}
+
 
 
 }

@@ -97,6 +97,30 @@ public class DefaultStatement extends AbstractStatement {
 		return true;
 	}
 
+	// XXX not used by hibernate
+	@Override
+	public ResultSet executeQuery(final String sql) throws SQLException {
+
+		final String transformedSQL = transformSQL(sql);
+
+		if (transformedSQL.length() > 0) {
+
+			final Statement statement = new SimpleStatement(transformedSQL);
+
+			if (getMaxRows() > 0)
+				statement.setFetchSize(getMaxRows());
+
+			resultSet = session.execute(statement);
+
+			warnings.add(resultSet);
+
+			return new CassandraResultSet(driverContext, resultSet);
+		}
+
+		return null;
+	}
+
+
 
 	protected String transformSQL(final String originalSQL) {
 		return connection.getTransformer().transform(originalSQL);

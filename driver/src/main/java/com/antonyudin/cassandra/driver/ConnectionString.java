@@ -38,11 +38,13 @@ public class ConnectionString implements java.io.Serializable {
 	private final static Logger logger = Logger.getLogger(ConnectionString.class.getName());
 
 
-	private final String parameters_tracing = "tracing";
-	private final String parameters_transformer = "transformer";
+	private final static String parameters_tracing = "tracing";
+	private final static String parameters_transformer = "transformer";
 
 
 	public ConnectionString(final String url) throws java.net.URISyntaxException {
+
+		this.url = url;
 
 		final String jdbcPrefix = "jdbc:";
 
@@ -128,9 +130,6 @@ public class ConnectionString implements java.io.Serializable {
 
 			final int index = query.indexOf("&", position);
 
-			logger.info("position: " + position + "]");
-			logger.info("index: " + index + "]");
-
 			final String pair = query.substring(
 				position,
 				index >= 0?
@@ -158,6 +157,12 @@ public class ConnectionString implements java.io.Serializable {
 		return result;
 	}
 
-}
 
+	private final String url;
+
+	public String getURL() {
+		return url;
+	}
+
+}
 

@@ -54,6 +54,12 @@ public class DefaultConnection extends AbstractConnection {
 	private final PreparedStatementsCache preparedStatementsCache;
 	private final ConnectionString connectionString;
 
+
+	public ConnectionString getConnectionString() {
+		return connectionString;
+	}
+
+
 	public static class UUIDAsStringCodec
 		extends com.datastax.driver.extras.codecs.MappingCodec<String, UUID>
 	{
@@ -462,6 +468,11 @@ public class DefaultConnection extends AbstractConnection {
 	public boolean isValid(final int timeout) throws SQLException {
 		// XXX should execute a simple query to check that the connection is still valid.
 		return (!session.isClosed());
+	}
+
+	@Override
+	public void setCatalog(final String catalog) throws SQLException {
+		// ignore
 	}
 
 }
