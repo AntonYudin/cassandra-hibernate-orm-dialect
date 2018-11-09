@@ -70,8 +70,10 @@ public class CassandraDialect extends Dialect {
 		registerColumnType(Types.DOUBLE, "double");
 		registerColumnType(Types.FLOAT, "float");
 		registerColumnType(Types.INTEGER, "int");
+		registerColumnType(Types.VARCHAR, "varchar");
 
 		registerColumnType(Types.OTHER, "uuid");
+		registerColumnType(Types.JAVA_OBJECT, "list<text>");
 
 		registerHibernateType(Types.OTHER, "uuid");
 		registerHibernateType(Types.JAVA_OBJECT, "list<text>");

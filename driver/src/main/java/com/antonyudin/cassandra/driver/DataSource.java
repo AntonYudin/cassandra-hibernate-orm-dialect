@@ -58,7 +58,10 @@ public class DataSource implements javax.sql.DataSource {
 	@Override
 	public Connection getConnection(final String user, final String password) throws SQLException {
 		try {
+			logger.fine(()-> "getConnection(" + user + ",)");
+
 			final Connection connection = DriverManager.getConnection(getUrl(), user, password);
+
 			return connection;
 		} catch (SQLException exception) {
 			logger.warning("exception: " + exception);
@@ -128,6 +131,8 @@ public class DataSource implements javax.sql.DataSource {
 
 	public String getUrl() {
 
+		logger.fine(()-> "getUrl()");
+
 		final StringBuilder result = new StringBuilder();
 
 		result.append("jdbc:cassandra://");
@@ -138,6 +143,13 @@ public class DataSource implements javax.sql.DataSource {
 
 		result.append("/");
 		result.append(getDatabaseName());
+
+		result.append("?a=b");
+
+		if (getTransformer() != null) {
+			result.append("&transformer=");
+			result.append(getTransformer());
+		}
 
 		return result.toString();
 	}
@@ -153,6 +165,19 @@ public class DataSource implements javax.sql.DataSource {
 	@Override
 	public void setLoginTimeout(final int value) {
 		loginTimeout = value;
+	}
+
+
+
+	private String transformer;
+
+	public String getTransformer() {
+		return transformer;
+	}
+
+	public void setTransformer(final String value) {
+		logger.fine(()-> "setTransformer(" + value + ")");
+		transformer = value;
 	}
 
 

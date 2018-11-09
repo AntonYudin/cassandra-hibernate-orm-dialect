@@ -1173,5 +1173,74 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 
 	}
 
+
+	@org.junit.jupiter.api.Test
+	public void testSelectCriteriaByTypeFiltering() {
+
+		final List<Event> events = generateEvents(4);
+
+		final EntityTransaction transaction = entityManager.getTransaction();
+
+		transaction.begin();
+
+		for (Event event: events) {
+
+			entityManager.persist(event);
+
+			assertTrue(entityManager.contains(event));
+
+			for (EventChild child: event.getChildren()) {
+
+				entityManager.persist(child);
+
+				assertTrue(entityManager.contains(child));
+			}
+		}
+
+		entityManager.flush();
+		transaction.commit();
+		entityManager.clear();
+
+
+		transaction.begin();
+
+		final CriteriaQuery<Event> criteria = entityManager.getCriteriaBuilder().createQuery(
+			Event.class
+		);
+
+		final Root<Event> items = criteria.from(Event.class);
+
+		criteria.select(items);
+
+		criteria.where(
+			entityManager.getCriteriaBuilder().equal(
+				items.get(Event_.id).get(EventId_.type),
+				events.get(0).getId().getType()
+			)
+		);
+
+
+		final List<Event> foundEvents = entityManager.createQuery(
+			criteria
+		).setHint("org.hibernate.comment", "allowFiltering").getResultList();
+
+	//	assertEquals(foundEvents.size(), 1);
+
+		for (Event event: foundEvents) {
+		//	logger.info("found event: [" + event + "]");
+
+			for (EventChild child: event.getChildren()) {
+			//	logger.info("\tchild: [" + child + "]");
+
+			}
+
+			assertEquals(event.getChildren().size(), 3);
+		}
+
+		transaction.commit();
+
+	}
+
+
 }
 

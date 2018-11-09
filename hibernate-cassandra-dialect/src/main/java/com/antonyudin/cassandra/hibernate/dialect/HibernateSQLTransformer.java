@@ -31,6 +31,7 @@ public class HibernateSQLTransformer implements com.antonyudin.cassandra.driver.
 
 	private final static boolean logTransformation = false;
 
+	private final static String patternSelect = "select ";
 	private final static String patternFrom = " from ";
 	private final static String patternNotNull = " not null";
 	private final static String patternAlterTable = "alter table ";
@@ -54,7 +55,10 @@ public class HibernateSQLTransformer implements com.antonyudin.cassandra.driver.
 		final int limit = (indexOfFirstQuote > 0? indexOfFirstQuote: originalSQL.length());
 
 
-		if (originalSQL.startsWith("select")) {
+		if (originalSQL.startsWith(patternSelect)) {
+
+			// for hibernate select, remove table aliases.
+			// Cassandra does not support table aliases.
 
 			final int indexOfFrom = originalSQL.indexOf(" from ");
 
@@ -104,6 +108,9 @@ public class HibernateSQLTransformer implements com.antonyudin.cassandra.driver.
 
 		} else if (originalSQL.startsWith("create table")) {
 
+			// remove "NOT NULL"
+			// Cassandra does not support "NOT NULL"
+
 		//	logger.info("create table");
 
 			final StringBuilder builder = new StringBuilder(originalSQL);
@@ -124,6 +131,12 @@ public class HibernateSQLTransformer implements com.antonyudin.cassandra.driver.
 			return result;
 
 		} else if (originalSQL.startsWith(patternAlterTable)) {
+
+
+			// for alter table
+			// 1. change "add column" to "add"
+			// 2. remove "add constraint" query completely
+			// 3. remove "drop constraint" query completely
 
 			final StringBuilder builder = new StringBuilder(originalSQL);
 

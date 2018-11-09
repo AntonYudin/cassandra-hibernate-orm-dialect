@@ -74,7 +74,10 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 
 	private final Driver.Context driverContext;
 	private final DefaultConnection.Context connectionContext;
+
 	private boolean enableTracingRequested = false;
+	private boolean allowFilteringRequested = false;
+
 	private final CommentsProcessor commentsProcessor;
 
 
@@ -105,8 +108,13 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 		this.commentsProcessor = new CommentsProcessor(
 			beginningComments,
 			new CommentsProcessor.Options() {
+				@Override
 				public void enableTracing() {
 					enableTracingRequested = true;
+				}
+				@Override
+				public void allowFiltering() {
+					allowFilteringRequested = true;
 				}
 			}
 		);
@@ -127,7 +135,12 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 		try {
 
 			this.preparedStatement = this.preparedStatementsCache.get(
-				this.sqlWithoutBeginningComments
+				this.sqlWithoutBeginningComments +
+				(
+					(this.select && allowFilteringRequested)?
+					" ALLOW FILTERING":
+					""
+				)
 			);
 
 		} catch (java.lang.Exception exception) {

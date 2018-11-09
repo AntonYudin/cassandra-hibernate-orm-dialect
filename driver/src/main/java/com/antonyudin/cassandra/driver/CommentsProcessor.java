@@ -42,6 +42,7 @@ public class CommentsProcessor implements java.io.Serializable {
 	CommentsProcessor(final String comments, final Options options) throws SQLException {
 
 		processors.add((line) -> processTracing(line, options));
+		processors.add((line) -> processAllowFiltering(line, options));
 
 		processComments(comments, options);
 	}
@@ -50,6 +51,11 @@ public class CommentsProcessor implements java.io.Serializable {
 	protected void processTracing(final String line, final Options options) {
 		if (line.equals("enableTracing"))
 			options.enableTracing();
+	}
+
+	protected void processAllowFiltering(final String line, final Options options) {
+		if (line.equals("allowFiltering"))
+			options.allowFiltering();
 	}
 
 	protected void processComments(final String comments, final Options options) {
@@ -71,6 +77,7 @@ public class CommentsProcessor implements java.io.Serializable {
 
 	public interface Options {
 		public void enableTracing();
+		public void allowFiltering();
 	}
 
 
