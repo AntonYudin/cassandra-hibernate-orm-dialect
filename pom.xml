@@ -165,8 +165,15 @@
 						<compilerArgument>-Xlint:all</compilerArgument>
 					</configuration>
 				</plugin>
-			</plugins>
 
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.7.1</version>
+				</plugin>
+
+			</plugins>
+			
 		</pluginManagement>
 	</build>
 
@@ -269,9 +276,15 @@
 				<version>3.0.2</version>
 			</dependency>
 
+			<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+			-->
 
-
-<!--
+			<!--
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>

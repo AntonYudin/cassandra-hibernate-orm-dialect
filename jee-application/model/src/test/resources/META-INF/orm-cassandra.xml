@@ -41,10 +41,10 @@
 			<basic name="listOfNames">
 				<column	column-definition="list&lt;text&gt;">
 				</column>
-				<convert
-					converter="ListOfStringsAsObjectConverter"
-				>
-				</convert>
+			</basic>
+			<basic name="mapOfValues">
+				<column	column-definition="map&lt;text, text&gt;">
+				</column>
 			</basic>
 		</attributes>
 	</entity>

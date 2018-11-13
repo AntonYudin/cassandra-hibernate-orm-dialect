@@ -26,6 +26,8 @@ package com.antonyudin.cassandra.model;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
 
 import java.time.LocalDateTime;
 
@@ -244,10 +246,6 @@ public class Event implements Comparable<Event>, java.io.Serializable {
 
 	private List<String> listOfNames = new ArrayList<>();
 
-	//@Basic
-	//(columnDefinition = "list<text>")
-	//@Convert(converter = ListOfStringsAsObjectConverter.class)
-
 //	@Transient
 	public List<String> getListOfNames() {
 		return listOfNames;
@@ -255,6 +253,19 @@ public class Event implements Comparable<Event>, java.io.Serializable {
 
 	public void setListOfNames(final List<String> value) {
 		listOfNames = value;
+	}
+
+ 
+ 
+	private Map<String, String> mapOfValues = new HashMap<>();
+
+//	@Transient
+	public Map<String, String> getMapOfValues() {
+		return mapOfValues;
+	}
+
+	public void setMapOfValues(final Map<String, String> value) {
+		mapOfValues = value;
 	}
 
 

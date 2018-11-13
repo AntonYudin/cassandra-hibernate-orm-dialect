@@ -236,7 +236,10 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 		assertEquals(foundEvents.size(), 1);
 
 		for (Event event: foundEvents) {
-		//	logger.info("found event: [" + event + "]");
+			logger.info("found event: [" + event + "]");
+
+			logger.info("\tlistOfNames: [" + event.getListOfNames() + "]");
+			logger.info("\tmapOfValues: [" + event.getMapOfValues() + "]");
 
 			for (EventChild child: event.getChildren()) {
 			//	logger.info("\tchild: [" + child + "]");
@@ -538,6 +541,11 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 			event.getListOfNames().add("test1 - " + random.nextLong());
 			event.getListOfNames().add("test2 - " + random.nextLong());
 			event.getListOfNames().add("test3 - " + random.nextLong());
+
+			event.getMapOfValues().put("test 1", "value 1");
+			event.getMapOfValues().put("test 2", "value 2");
+			event.getMapOfValues().put("test 3", "value 3");
+			event.getMapOfValues().put("test 4", "value 4");
 
 			for (int j = 0; j < 3; j++) {
 				final EventChild child = new EventChild();

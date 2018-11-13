@@ -33,6 +33,7 @@ import java.sql.PreparedStatement;
 
 import java.util.UUID;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.engine.jdbc.env.spi.AnsiSqlKeywords;
 import org.hibernate.engine.jdbc.env.spi.IdentifierCaseStrategy;
@@ -73,10 +74,10 @@ public class CassandraDialect extends Dialect {
 		registerColumnType(Types.VARCHAR, "varchar");
 
 		registerColumnType(Types.OTHER, "uuid");
-		registerColumnType(Types.JAVA_OBJECT, "list<text>");
+		registerColumnType(Types.JAVA_OBJECT, "list");
 
 		registerHibernateType(Types.OTHER, "uuid");
-		registerHibernateType(Types.JAVA_OBJECT, "list<text>");
+		registerHibernateType(Types.JAVA_OBJECT, "list");
 	}
 
 	@Override
@@ -116,8 +117,130 @@ public class CassandraDialect extends Dialect {
 	) {
 		super.contributeTypes(typeContributions, serviceRegistry);
 		typeContributions.contributeType(new NativeUUIDType());
-		typeContributions.contributeType(new NativeListType());
+		typeContributions.contributeType(new CassandraNativeListType());
 	}
+
+
+	public static class CassandraNativeListType extends AbstractSingleColumnStandardBasicType<Object> {
+
+		public static final CassandraNativeListType INSTANCE = new CassandraNativeListType();
+	
+		public CassandraNativeListType() {
+			super(
+				CassandraNativeListSqlTypeDescriptor.INSTANCE,
+				CassandraListTypeDescriptor.INSTANCE
+			);
+		}
+
+	
+		public String getName() {
+			return "list";
+		}
+	
+		@Override
+		protected boolean registerUnderJavaType() {
+			return false;
+		}
+
+		@Override
+		public String[] getRegistrationKeys() {
+			return new String[] {
+				"list",
+				"list<text>",
+				"map<text, text>",
+				"java.util.List",
+				"java.util.Map"
+			};
+		}
+
+		public static class CassandraNativeListSqlTypeDescriptor implements SqlTypeDescriptor {
+
+			public static final CassandraNativeListSqlTypeDescriptor INSTANCE = new CassandraNativeListSqlTypeDescriptor();
+
+			public int getSqlType() {
+				return Types.JAVA_OBJECT;
+			}
+
+			@Override
+			public boolean canBeRemapped() {
+				return true;
+			}
+
+			public <X> ValueBinder<X> getBinder(final JavaTypeDescriptor<X> javaTypeDescriptor) {
+				return new BasicBinder<X>(javaTypeDescriptor, this) {
+					@Override
+					protected void doBind(
+						final PreparedStatement st,
+						final X value,
+						final int index,
+						final WrapperOptions options
+					) throws SQLException {
+
+					//	logger.info("doBind(" + (value != null? value.getClass(): "unknown") + ")");
+
+						if (value instanceof List) {
+							st.setObject(
+								index,
+								javaTypeDescriptor.unwrap(value, List.class, options),
+								getSqlType()
+							);
+						} else if (value instanceof Map) {
+							st.setObject(
+								index,
+								javaTypeDescriptor.unwrap(value, Map.class, options),
+								getSqlType()
+							);
+						}
+					}
+
+					@Override
+					protected void doBind(
+						final CallableStatement st,
+						final X value,
+						final String name,
+						final WrapperOptions options
+					) throws SQLException {
+
+					//	logger.info("doBind(" + (value != null? value.getClass(): "unknown") + ")");
+
+						if (value instanceof List) {
+							st.setObject(
+								name,
+								javaTypeDescriptor.unwrap(value, List.class, options),
+								getSqlType()
+							);
+						} else if (value instanceof Map) {
+							st.setObject(
+								name,
+								javaTypeDescriptor.unwrap(value, Map.class, options),
+								getSqlType()
+							);
+						}
+					}
+				};
+			}
+
+			public <X> ValueExtractor<X> getExtractor(final JavaTypeDescriptor<X> javaTypeDescriptor) {
+				return new BasicExtractor<X>( javaTypeDescriptor, this ) {
+					@Override
+					protected X doExtract(final ResultSet resultSet, final String name, final WrapperOptions options) throws SQLException {
+						return javaTypeDescriptor.wrap(resultSet.getObject(name), options);
+					}
+
+					@Override
+					protected X doExtract(final CallableStatement statement, final int index, final WrapperOptions options) throws SQLException {
+						return javaTypeDescriptor.wrap(statement.getObject(index), options);
+					}
+
+					@Override
+					protected X doExtract(final CallableStatement statement, final String name, final WrapperOptions options) throws SQLException {
+						return javaTypeDescriptor.wrap(statement.getObject(name), options);
+					}
+				};
+			}
+		}
+ 	}
+ 
 
 
 	public static class NativeUUIDType extends AbstractSingleColumnStandardBasicType<UUID> {

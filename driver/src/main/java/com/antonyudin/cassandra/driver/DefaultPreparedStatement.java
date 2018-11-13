@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import java.util.UUID;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -427,6 +428,21 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 			log("}");
 
 			getBoundStatement().setList(parameterIndex - 1, (List) x);
+		} else if (x instanceof Map) {
+
+			log("types (" +
+				x.getClass().getTypeParameters()[0].getName() + ", " +
+				x.getClass().getTypeParameters()[0].getTypeName() +
+				") {"
+			);
+
+			for (java.lang.reflect.Type type: x.getClass().getTypeParameters()[0].getBounds()) {
+				log("\ttype: [" + type + "]");
+			}
+
+			log("}");
+
+			getBoundStatement().setMap(parameterIndex - 1, (Map) x);
 		} else
 			throw new IllegalArgumentException("class [" + x.getClass() + "] is not supported");
 	}
