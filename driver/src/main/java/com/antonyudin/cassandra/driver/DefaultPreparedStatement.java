@@ -206,7 +206,7 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 
 		final int numberOfStatements = getBatchStatement().getStatements().size();
 
-//		logger.info("BATCH [" + numberOfStatements + "]");
+	//	logger.info("BATCH [" + numberOfStatements + "]");
 
 		applyTracing(getBatchStatement());
 
@@ -214,7 +214,7 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 
 		processTracing(resultSet);
 
-//		logger.info("resultSet: [" + resultSet + "]");
+	//	logger.info("resultSet: [" + resultSet + "]");
 
 		warnings.add(resultSet);
 
@@ -250,6 +250,9 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 
 		} else {
 
+		//	logger.info("batch update ...");
+
+			/*
 			final List<Integer> result = new ArrayList<>();
 
 			final Iterator<com.datastax.driver.core.Row> iterator = resultSet.iterator();
@@ -258,11 +261,27 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 
 				final com.datastax.driver.core.Row row = iterator.next();
 
+				logger.info("row: [" + row + "]");
+
 				if (row == null)
 					break;
 			}
 
+			logger.info("returning null");
+
 			return null;
+
+			*/
+
+			// fake batch update results
+
+			final int[] result = new int[numberOfStatements];
+
+			for (int i = 0; i < result.length; i++) {
+				result[i] = 1;
+			}
+
+			return result;
 		}
 	}
 
