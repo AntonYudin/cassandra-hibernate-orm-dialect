@@ -20,7 +20,7 @@ This is an open-source JDBC driver and Hibernate ORM Dialect for Cassandra.
 ## Supported versions
 The goal is to support the latest versions of Java, Hibernate, Cassandra, and Datastax driver.
 * Java 9, 10, 11
-* Cassandra 3.11.x
+* Cassandra 3.11.x, 4.0
 * Hibernate 5.3.x
 * Datastax Driver 3.4.0
 
