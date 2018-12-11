@@ -967,7 +967,7 @@ public class DefaultDatabaseMetaData extends AbstractDatabaseMetaData {
 
 					if (version != null) {
 
-						final String[] parts = version.split("\\.");
+						final String[] parts = version.split("\\.|-");
 
 						if (parts.length > 0)
 							databaseMajorVersion = Integer.valueOf(parts[0]);
