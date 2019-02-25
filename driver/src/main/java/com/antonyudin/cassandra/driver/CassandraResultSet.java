@@ -34,6 +34,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.DataType;
+import com.datastax.driver.core.LocalDate;
 
 
 public class CassandraResultSet extends AbstractResultSet {
@@ -346,10 +347,15 @@ public class CassandraResultSet extends AbstractResultSet {
 
 		lastWasNull = currentRow.isNull(columnLabel);
 
+		if (lastWasNull)
+			return null;
+
+		final LocalDate value = currentRow.getDate(columnLabel);
+
 		return (
-			lastWasNull?
-			null:
-			new java.sql.Date(currentRow.getDate(columnLabel).getMillisSinceEpoch())
+			java.sql.Date.valueOf(
+				java.time.LocalDate.of(value.getYear(), value.getMonth(), value.getDay())
+			)
 		);
 	}
 
@@ -359,10 +365,49 @@ public class CassandraResultSet extends AbstractResultSet {
 
 		lastWasNull = currentRow.isNull(columnIndex - 1);
 
+		if (lastWasNull)
+			return null;
+
+		final LocalDate value = currentRow.getDate(columnIndex - 1);
+
+		return (
+			java.sql.Date.valueOf(
+				java.time.LocalDate.of(value.getYear(), value.getMonth(), value.getDay())
+			)
+		);
+	}
+
+
+	@Override
+	public java.sql.Time getTime(final String columnLabel) throws SQLException {
+
+		lastWasNull = currentRow.isNull(columnLabel);
+
 		return (
 			lastWasNull?
 			null:
-			new java.sql.Date(currentRow.getDate(columnIndex - 1).getMillisSinceEpoch())
+			java.sql.Time.valueOf(
+				java.time.LocalTime.ofNanoOfDay(
+					currentRow.getTime(columnLabel)
+				)
+			)
+		);
+	}
+
+	// XXX not used by hibernate
+	@Override
+	public java.sql.Time getTime(final int columnIndex) throws SQLException {
+
+		lastWasNull = currentRow.isNull(columnIndex - 1);
+
+		return (
+			lastWasNull?
+			null:
+			java.sql.Time.valueOf(
+				java.time.LocalTime.ofNanoOfDay(
+					currentRow.getTime(columnIndex - 1)
+				)
+			)
 		);
 	}
 

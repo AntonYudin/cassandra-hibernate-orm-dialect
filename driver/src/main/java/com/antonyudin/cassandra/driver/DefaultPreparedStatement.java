@@ -420,6 +420,20 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 		);
 	}
 
+	@Override
+	public void setTime(final int parameterIndex, final java.sql.Time x) throws SQLException {
+		log("setTime(" + parameterIndex + ", " + x + ")");
+		if (x != null) {
+			// looses nano precision
+			getBoundStatement().setTime(
+				parameterIndex - 1,
+				x.toLocalTime().toNanoOfDay()
+			);
+		} else {
+			getBoundStatement().setToNull(parameterIndex - 1);
+		}
+	}
+
 
 	@Override
 	public void setObject(int parameterIndex, Object x, int targetSqlType) throws SQLException {

@@ -5,7 +5,7 @@ DROP TABLE children;
 
 CREATE TABLE event_children (source_identity_value uuid, child_id bigint, identity uuid, type text, groupname text, reference bigint, created timestamp, PRIMARY KEY (source_identity_value, identity, type, groupname, reference, created, child_id));
 
-CREATE TABLE events (source_identity uuid, created timestamp, groupName TEXT, identity uuid, reference bigint, type TEXT, doubleValue double, content TEXT, content2 TEXT, data blob, floatValue float, listOfNames frozen<list<text>>, removed boolean, shortValue smallint, name TEXT, createdLocalDateTime timestamp, primary key (source_identity, identity, type, groupName, reference, created));
+CREATE TABLE events (source_identity uuid, created timestamp, groupName TEXT, identity uuid, reference bigint, type TEXT, doubleValue double, content TEXT, content2 TEXT, data blob, floatValue float, listOfNames frozen<list<text>>, removed boolean, shortValue smallint, name TEXT, createdLocalDateTime timestamp, createdLocalDate date, createdLocalTime time, primary key (source_identity, identity, type, groupName, reference, created));
 
 CREATE TABLE children (child_id bigint, parent_id bigint, PRIMARY KEY (parent_id, child_id));
 

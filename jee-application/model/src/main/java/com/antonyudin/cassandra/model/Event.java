@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -187,6 +189,30 @@ public class Event implements Comparable<Event>, java.io.Serializable {
 
 	public void setCreatedLocalDateTime(final LocalDateTime value) {
 		createdLocalDateTime = value;
+	}
+
+
+	private LocalDate createdLocalDate;
+
+	@Column
+	public LocalDate getCreatedLocalDate() {
+		return createdLocalDate;
+	}
+
+	public void setCreatedLocalDate(final LocalDate value) {
+		createdLocalDate = value;
+	}
+
+
+	private LocalTime createdLocalTime;
+
+	@Column
+	public LocalTime getCreatedLocalTime() {
+		return createdLocalTime;
+	}
+
+	public void setCreatedLocalTime(final LocalTime value) {
+		createdLocalTime = value;
 	}
 
 

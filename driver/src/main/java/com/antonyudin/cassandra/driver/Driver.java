@@ -185,7 +185,9 @@ public class Driver implements java.sql.Driver {
 			else if (type == DataType.timestamp())
 				return Types.TIMESTAMP;
 			else if (type == DataType.date())
-				return Types.TIMESTAMP;
+				return Types.DATE;
+			else if (type == DataType.time())
+				return Types.TIME;
 			else if (type == DataType.cint())
 				return Types.INTEGER;
 			else if (type == DataType.cboolean())

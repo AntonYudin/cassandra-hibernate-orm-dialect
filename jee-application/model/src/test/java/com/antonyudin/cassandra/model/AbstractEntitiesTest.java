@@ -30,6 +30,7 @@ import java.util.UUID;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -511,6 +512,8 @@ public abstract class AbstractEntitiesTest extends AbstractTest {
 
 		instance.getId().setSourceId(instance.getSource().getId());
 		instance.setCreatedLocalDateTime(LocalDateTime.now());
+		instance.setCreatedLocalDate(LocalDate.now());
+		instance.setCreatedLocalTime(LocalTime.now());
 
 		return instance;
 	}

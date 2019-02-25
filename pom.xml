@@ -119,16 +119,18 @@
 		<module>jee-application</module>
 	</modules>
 
+<!--
 	<repositories>
 		<repository>
 			<id>in-project</id>
 			<name>project repository</name>
 			<url>file://${project.parent.basedir}/project-repository</url>
-			<!--
+			<!- -
 			<url>file://F:/projects/antonyudin/cassandra-driver/project-repository</url>
-			-->
+			- ->
 		</repository>
 	</repositories>
+-->
 
 
 	<build>
@@ -166,11 +168,13 @@
 					</configuration>
 				</plugin>
 
+<!--
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.7.1</version>
 				</plugin>
+-->
 
 			</plugins>
 			
