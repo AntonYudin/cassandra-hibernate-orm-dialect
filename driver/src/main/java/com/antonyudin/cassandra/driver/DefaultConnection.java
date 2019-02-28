@@ -249,7 +249,10 @@ public class DefaultConnection extends AbstractConnection {
 
 		this.driverContext = driverContext;
 		this.connectionString = connectionString;
-		this.context = new Context(connectionString.isTracingEnabled());
+		this.context = new Context(
+			connectionString.isTracingEnabled(),
+			connectionString.isAllowFiltering()
+		);
 
 		if (connectionString.getTransformer() != null) {
 			this.transformer = (SQLTransformer) (
@@ -452,14 +455,21 @@ public class DefaultConnection extends AbstractConnection {
 	public static class Context implements java.io.Serializable {
 
 		private final boolean tracingEnabled;
+		private final boolean allowFiltering;
 
-		public Context(final boolean tracingEnabled) {
+
+		public Context(final boolean tracingEnabled, final boolean allowFiltering) {
 			this.tracingEnabled = tracingEnabled;
+			this.allowFiltering = allowFiltering;
 		}
 
 
 		public boolean isTracingEnabled() {
 			return tracingEnabled;
+		}
+
+		public boolean isAllowFiltering() {
+			return allowFiltering;
 		}
 	}
 

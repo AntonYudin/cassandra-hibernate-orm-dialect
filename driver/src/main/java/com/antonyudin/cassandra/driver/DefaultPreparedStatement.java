@@ -138,7 +138,10 @@ public class DefaultPreparedStatement extends AbstractPreparedStatement {
 			this.preparedStatement = this.preparedStatementsCache.get(
 				this.sqlWithoutBeginningComments +
 				(
-					(this.select && allowFilteringRequested)?
+					(this.select && (
+						allowFilteringRequested ||
+						connectionContext.isAllowFiltering()
+					))?
 					" ALLOW FILTERING":
 					""
 				)

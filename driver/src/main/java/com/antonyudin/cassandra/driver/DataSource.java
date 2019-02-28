@@ -151,6 +151,10 @@ public class DataSource implements javax.sql.DataSource {
 			result.append(getTransformer());
 		}
 
+		if ((getAllowFiltering() != null) && getAllowFiltering().equalsIgnoreCase("true")) {
+			result.append("&allowFiltering=true");
+		}
+
 		return result.toString();
 	}
 
@@ -178,6 +182,18 @@ public class DataSource implements javax.sql.DataSource {
 	public void setTransformer(final String value) {
 		logger.fine(()-> "setTransformer(" + value + ")");
 		transformer = value;
+	}
+
+
+	private String allowFiltering;
+
+	public String getAllowFiltering() {
+		return allowFiltering;
+	}
+
+	public void setAllowFiltering(final String value) {
+		logger.fine(()-> "setAllowFiltering(" + value + ")");
+		allowFiltering = value;
 	}
 
 

@@ -26,7 +26,7 @@ package com.antonyudin.cassandra.hibernate.dialect;
 public class HibernateSQLTransformer implements com.antonyudin.cassandra.driver.SQLTransformer {
 
 	private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(
-		com.antonyudin.cassandra.driver.SQLTransformer.class.getName()
+		HibernateSQLTransformer.class.getName()
 	);
 
 	private final static boolean logTransformation = false;

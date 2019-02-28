@@ -40,6 +40,7 @@ public class ConnectionString implements java.io.Serializable {
 
 	private final static String parameters_tracing = "tracing";
 	private final static String parameters_transformer = "transformer";
+	private final static String parameters_allowFiltering = "allowFiltering";
 
 
 	public ConnectionString(final String url) throws java.net.URISyntaxException {
@@ -87,6 +88,12 @@ public class ConnectionString implements java.io.Serializable {
 		)
 			tracingEnabled = true;
 
+		if (
+			(parameters.get(parameters_allowFiltering) != null) &&
+			(parameters.get(parameters_allowFiltering).equals("true"))
+		)
+			allowFiltering = true;
+
 		transformer = parameters.get(parameters_transformer);
 	}
 
@@ -110,6 +117,14 @@ public class ConnectionString implements java.io.Serializable {
 	public boolean isTracingEnabled() {
 		return tracingEnabled;
 	}
+
+
+	private boolean allowFiltering = false;
+
+	public boolean isAllowFiltering() {
+		return allowFiltering;
+	}
+
 
 
 	private String transformer = null;
