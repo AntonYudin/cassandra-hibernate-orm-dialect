@@ -7,7 +7,7 @@
 >
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.antonyudin.cassandra</groupId>
+	<groupId>com.antonyudin.cassandra.jeeapplication</groupId>
 	<artifactId>ay-jee-application</artifactId>
 	<version>1.0</version>
 	<packaging>pom</packaging>

@@ -6,7 +6,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
 
-	<!-- copyright (c) 2018 Anton Yudin -->
+	<!-- copyright (c) 2018, 2019 Anton Yudin, mailto: dev@antonyudin.com -->
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.antonyudin.cassandra</groupId>
@@ -26,10 +26,22 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<name>Anton Yudin</name>
+			<email>dev@antonyudin.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/AntonYudin/cassandra-hibernate-orm-dialect.git</connection>
+		<developerConnection>scm:git:git://github.com/AntonYudin/cassandra-hibernate-orm-dialect.git</developerConnection>
+		<url>https://github.com/AntonYudin/cassandra-hibernate-orm-dialect</url>
+	</scm>
 
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>9</maven.compiler.source>
+		<maven.compiler.target>9</maven.compiler.target>
 		<maven.jar.plugin.version>3.1.0</maven.jar.plugin.version>
 		<maven.ear.plugin.version>3.0.1</maven.ear.plugin.version>
 		<maven.ejb.plugin.version>3.0.1</maven.ejb.plugin.version>
@@ -106,9 +118,7 @@
 			</build>
 		</profile>
 
-
 	</profiles>
-
 
 
 	<modules>
@@ -119,23 +129,22 @@
 		<module>jee-application</module>
 	</modules>
 
-<!--
-	<repositories>
-		<repository>
-			<id>in-project</id>
-			<name>project repository</name>
-			<url>file://${project.parent.basedir}/project-repository</url>
-			<!- -
-			<url>file://F:/projects/antonyudin/cassandra-driver/project-repository</url>
-			- ->
-		</repository>
-	</repositories>
--->
-
 
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+
 		<pluginManagement>
+
 			<plugins>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
@@ -168,22 +177,51 @@
 					</configuration>
 				</plugin>
 
-<!--
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.7.1</version>
+					<artifactId>maven-source-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
--->
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.5</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 
 			</plugins>
 			
 		</pluginManagement>
 	</build>
-
-	<scm>
-		<url>https://github.com/AntonYudin/cassandra-hibernate-orm-dialect</url>
-	</scm>
 
 	<dependencies>
 		<dependency>
@@ -280,32 +318,20 @@
 				<version>3.0.2</version>
 			</dependency>
 
-			<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-			-->
-
-			<!--
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-api</artifactId>
-				<version>5.3.1</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-engine</artifactId>
-				<version>5.3.1</version>
-				<scope>test</scope>
-			</dependency>
--->
 		</dependencies>
 
 	</dependencyManagement>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 </project>
 
