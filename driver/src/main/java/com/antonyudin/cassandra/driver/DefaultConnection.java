@@ -290,12 +290,18 @@ public class DefaultConnection extends AbstractConnection {
 		else
 			keyspaceName = null;
 
-		if ((keyspaceName != null) && (keyspaceName.length() > 0)) {
-			logger.info(()-> "connecting to keyspace: [" + keyspaceName + "]");
-			session = cluster.connect(keyspaceName);
-		} else {
-			logger.info(()-> "connecting to cluster without a specific keyspace ...");
-			session = cluster.connect();
+		try {
+			if ((keyspaceName != null) && (keyspaceName.length() > 0)) {
+				logger.info(()-> "connecting to keyspace: [" + keyspaceName + "]");
+				session = cluster.connect(keyspaceName);
+			} else {
+				logger.info(()-> "connecting to cluster without a specific keyspace ...");
+				session = cluster.connect();
+			}
+		} catch (java.lang.Exception e) {
+			logger.info("cannot create session for cluster [" + cluster + "]");
+			cluster.close();
+			throw new IllegalArgumentException("cannot create session", e);
 		}
 
 		preparedStatementsCache = new PreparedStatementsCache(driverContext, this, session);
