@@ -9,13 +9,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ay-hibernate-cassandra-dialect</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0</version>
+	<version>1.1</version>
 
 
 	<parent>
 		<groupId>com.antonyudin.cassandra</groupId>
 		<artifactId>project</artifactId>
-		<version>1.0</version>
+		<version>1.1</version>
 	</parent>
 
 	<dependencies>
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>com.antonyudin.cassandra</groupId>
 			<artifactId>ay-cassandra-jdbc-driver</artifactId>
-			<version>1.0</version>
+			<version>1.1</version>
 		</dependency>
 
 
@@ -47,6 +47,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
+				<version>${maven.deploy.plugin.version}</version>
 				<configuration>
 					<skip>false</skip>
 				</configuration>
@@ -55,6 +56,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven.source.plugin.version}</version>
 			</plugin>
 
 			<plugin>
@@ -70,6 +72,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven.javadoc.plugin.version}</version>
 			</plugin>
 
 		</plugins>

@@ -24,13 +24,13 @@ This is an open-source JDBC driver and Hibernate ORM Dialect for Cassandra.
 <dependency>
 	<groupId>com.antonyudin.cassandra</groupId>
 	<artifactId>ay-cassandra-jdbc-driver</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 </dependency>
 
 <dependency>
 	<groupId>com.antonyudin.cassandra</groupId>
 	<artifactId>ay-hibernate-cassandra-dialect</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 </dependency>
 ```
 

@@ -9,12 +9,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>logic</artifactId>
 	<packaging>ejb</packaging>
-	<version>1.0</version>
+	<version>1.1</version>
 
 	<parent>
 		<groupId>com.antonyudin.cassandra.jeeapplication</groupId>
 		<artifactId>ay-jee-application</artifactId>
-		<version>1.0</version>
+		<version>1.1</version>
 	</parent>
 
 	<properties>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>com.antonyudin.cassandra.jeeapplication</groupId>
 			<artifactId>model</artifactId>
-			<version>1.0</version>
+			<version>1.1</version>
 			<type>jar</type>
 		</dependency>
 
